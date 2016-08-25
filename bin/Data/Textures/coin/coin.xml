@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<TextureAtlas imagePath="coin.png">
+	<SubTexture name="0" x="325" y="0" width="64" height="64" />
+	<SubTexture name="1" x="0" y="0" width="64" height="64" />
+	<SubTexture name="2" x="65" y="0" width="64" height="64" />
+	<SubTexture name="3" x="130" y="0" width="64" height="64" />
+	<SubTexture name="4" x="195" y="0" width="64" height="64" />
+	<SubTexture name="5" x="260" y="0" width="64" height="64" />
+</TextureAtlas>

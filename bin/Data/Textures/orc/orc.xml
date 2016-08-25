@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<TextureAtlas imagePath="orc.png">
+	<SubTexture name="attack0" x="0" y="0" width="64" height="128" />
+	<SubTexture name="attack1" x="130" y="65" width="64" height="64" />
+	<SubTexture name="damage0" x="130" y="0" width="64" height="64" />
+	<SubTexture name="damage1" x="195" y="0" width="64" height="64" />
+	<SubTexture name="death0" x="260" y="0" width="64" height="64" />
+	<SubTexture name="death1" x="325" y="0" width="64" height="64" />
+	<SubTexture name="death2" x="390" y="0" width="64" height="64" />
+	<SubTexture name="death3" x="130" y="130" width="64" height="64" />
+	<SubTexture name="death4" x="195" y="65" width="64" height="64" />
+	<SubTexture name="stand" x="260" y="65" width="64" height="64" />
+	<SubTexture name="walk0" x="325" y="65" width="64" height="64" />
+	<SubTexture name="walk1" x="390" y="65" width="64" height="64" />
+	<SubTexture name="walk2" x="0" y="129" width="64" height="64" />
+	<SubTexture name="walk3" x="65" y="130" width="64" height="64" />
+	<SubTexture name="block" x="65" y="0" width="64" height="128" />
+</TextureAtlas>

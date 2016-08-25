@@ -1,0 +1,5 @@
+﻿include_directories (${STATES_ENGINE_SDK}/include)
+set (TARGET_NAME StatesEngineSamples_Platformer)
+define_source_files ()
+setup_main_executable ()
+target_link_libraries (StatesEngineSamples_Platformer StatesEngine)

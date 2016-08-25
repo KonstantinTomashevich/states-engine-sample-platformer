@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<TextureAtlas imagePath="knight.png">
+	<SubTexture name="attack0" x="130" y="0" width="64" height="128" />
+	<SubTexture name="attack1" x="0" y="0" width="64" height="128" />
+	<SubTexture name="block" x="65" y="0" width="64" height="128" />
+	<SubTexture name="damage0_0" x="195" y="0" width="64" height="64" />
+	<SubTexture name="damage0_1" x="260" y="0" width="64" height="64" />
+	<SubTexture name="damage1_0" x="325" y="0" width="64" height="64" />
+	<SubTexture name="damage1_1" x="390" y="0" width="64" height="64" />
+	<SubTexture name="death0" x="455" y="0" width="64" height="64" />
+	<SubTexture name="death1" x="520" y="0" width="64" height="64" />
+	<SubTexture name="death2" x="585" y="0" width="64" height="64" />
+	<SubTexture name="death3" x="650" y="0" width="64" height="64" />
+	<SubTexture name="death4" x="715" y="0" width="64" height="64" />
+	<SubTexture name="jump_air" x="780" y="0" width="64" height="64" />
+	<SubTexture name="jump_ground" x="845" y="0" width="64" height="64" />
+	<SubTexture name="stand" x="910" y="0" width="64" height="64" />
+	<SubTexture name="walk0" x="195" y="64" width="64" height="64" />
+	<SubTexture name="walk1" x="260" y="64" width="64" height="64" />
+	<SubTexture name="walk2" x="325" y="64" width="64" height="64" />
+	<SubTexture name="walk3" x="390" y="64" width="64" height="64" />
+	<SubTexture name="walk4" x="455" y="64" width="64" height="64" />
+	<SubTexture name="walk5" x="520" y="64" width="64" height="64" />
+</TextureAtlas>
