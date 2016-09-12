@@ -17,7 +17,7 @@ if (COMMAND cmake_policy)
     endif ()
 endif ()
 # Set CMake modules search path
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}vendors/CMake/Modules)
+set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/vendors/CMake/Modules)
 # Include Urho3D Cmake common module
 include (Urho3D-CMake-common)
 # Find Urho3D library
@@ -30,4 +30,4 @@ if (NOT STATES_ENGINE_SDK)
 endif ()
 set (StatesEngine_DIR ${STATES_ENGINE_SDK}/cmake)
 find_package (StatesEngine REQUIRED)
-add_subdirectory (Source)
+add_subdirectory (sources)

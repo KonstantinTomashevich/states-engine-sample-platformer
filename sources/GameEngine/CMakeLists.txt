@@ -1,0 +1,7 @@
+set (TARGET_NAME GameEngine)
+file (GLOB BasicHeaders "*.hpp")
+file (GLOB BasicImplementations "*.cpp")
+set (SOURCE_FILES ${BasicHeaders} ${BasicImplementations})
+define_dependency_libs (Urho3D)
+setup_library (STATIC)
+target_link_libraries (GameEngine StatesEngine)
