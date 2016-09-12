@@ -1,4 +1,4 @@
-﻿#include "UnitBasis.hpp"
+#include "UnitBasis.hpp"
 #include "Constants.hpp"
 #include "Utils.hpp"
 
@@ -11,6 +11,8 @@
 #include <Urho3D/Urho2D/SpriterData2D.h>
 #include <Urho3D/Core/Variant.h>
 
+namespace GameEngine
+{
 float UnitBasis::DistanceToGround ()
 {
     Urho3D::PhysicsWorld2D *physicsWorld =
@@ -35,7 +37,7 @@ float UnitBasis::DistanceToGround ()
     return distanceToGround;
 }
 
-void UnitBasis::Jump()
+void UnitBasis::Jump ()
 {
     Urho3D::RigidBody2D *body = node_->GetComponent <Urho3D::RigidBody2D> ();
     if (DistanceToGround () < 0.1f)
@@ -194,12 +196,12 @@ void UnitBasis::SetNode (Urho3D::String wayToNode, StatesEngine::SceneContainer 
     SetNode (FindNode (context_, wayToNode, scene));
 }
 
-float UnitBasis::GetAttackDamage()
+float UnitBasis::GetAttackDamage ()
 {
     return attackDamage_;
 }
 
-void UnitBasis::SetAttackDamage(float attackDamage)
+void UnitBasis::SetAttackDamage (float attackDamage)
 {
     attackDamage_ = attackDamage;
 }
@@ -232,5 +234,6 @@ float UnitBasis::GetLives ()
 UnitBasis::~UnitBasis ()
 {
     Dispose ();
+}
 }
 

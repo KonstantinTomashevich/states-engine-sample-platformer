@@ -1,15 +1,18 @@
-﻿#include "InitMainMenu.hpp"
+#include "InitMainMenu.hpp"
 #include "MenuUi.hpp"
 #include <StatesEngine/StatesEngine.hpp>
 #include <Urho3D/Resource/ResourceCache.h>
-#include "Utils.hpp"
+#include <GameEngine/Utils.hpp>
 
-void MainMenuFunctions::InitMainMenu(Urho3D::Context *context)
+namespace FrontendCXX
 {
-    RegisterType <MenuUi> (context);
-    StatesEngine::StatesEngine *statesEngine = context->GetSubsystem <StatesEngine::StatesEngine> ();
+void MainMenuFunctions::InitMainMenu (Urho3D::Context *context)
+{
+    GameEngine::RegisterType <MenuUi> (context);
+    StatesEngine::StatesEngineSubsystem *statesEngine = context->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->DisposeAll ("any");
     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->RemoveAll ("any");
     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <MenuUi> ();
     context->GetSubsystem <Urho3D::ResourceCache> ()->ReleaseAllResources ();
+}
 }

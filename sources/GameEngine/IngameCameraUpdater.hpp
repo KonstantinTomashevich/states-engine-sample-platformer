@@ -1,10 +1,12 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Scene/Node.h>
 #include <StatesEngine/SceneContainer.hpp>
 #include <StatesEngine/StateObject.hpp>
 
+namespace GameEngine
+{
 class IngameCameraUpdater : public StatesEngine::StateObject
 {
 URHO3D_OBJECT (IngameCameraUpdater, StatesEngine::StateObject)
@@ -31,3 +33,4 @@ public:
     void SetTileMapNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene = 0);
     virtual ~IngameCameraUpdater ();
 };
+}

@@ -1,4 +1,4 @@
-﻿#include "IngameHud.hpp"
+#include "IngameHud.hpp"
 #include <StatesEngine/StatesEngine.hpp>
 
 #include <Urho3D/Graphics/Graphics.h>
@@ -7,6 +7,8 @@
 #include <Urho3D/UI/Font.h>
 #include <Urho3D/IO/Log.h>
 
+namespace FrontendCXX
+{
 void IngameHud::InitUI ()
 {
     Urho3D::UI *ui = context_->GetSubsystem <Urho3D::UI> ();
@@ -224,9 +226,9 @@ IngameHud::IngameHud (Urho3D::Context *context) : StateObject (context), listene
 
 bool IngameHud::Init ()
 {
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     if (!playerController_)
-        playerController_ = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <IngamePlayerController> ();
+        playerController_ = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <GameEngine::IngamePlayerController> ();
 
     if (playerController_)
     {
@@ -270,12 +272,12 @@ bool IngameHud::Dispose ()
     return true;
 }
 
-IngamePlayerController *IngameHud::GetPlayerController()
+GameEngine::IngamePlayerController *IngameHud::GetPlayerController ()
 {
     return playerController_;
 }
 
-void IngameHud::SetPlayerController(IngamePlayerController *playerController)
+void IngameHud::SetPlayerController (GameEngine::IngamePlayerController *playerController)
 {
     playerController_ = playerController;
 }
@@ -302,4 +304,4 @@ IngameHud::~IngameHud ()
 {
     Dispose ();
 }
-
+}

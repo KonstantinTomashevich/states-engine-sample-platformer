@@ -1,10 +1,12 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Scene/Node.h>
 #include <StatesEngine/SceneContainer.hpp>
 #include "UnitBasis.hpp"
 
+namespace GameEngine
+{
 class IngamePlayerController : public UnitBasis
 {
 URHO3D_OBJECT (IngamePlayerController, UnitBasis)
@@ -36,3 +38,4 @@ public:
     void SetCoins (float coins);
     virtual ~IngamePlayerController ();
 };
+}

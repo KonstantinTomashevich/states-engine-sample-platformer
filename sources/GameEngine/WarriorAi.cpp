@@ -1,8 +1,7 @@
-﻿#include "WarriorAi.hpp"
+#include "WarriorAi.hpp"
 #include "Utils.hpp"
 #include "Constants.hpp"
 #include "UnitInterface.hpp"
-#include "InitIngameState.hpp"
 
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Urho2D/RigidBody2D.h>
@@ -16,7 +15,9 @@
 #include <Urho3D/Math/MathDefs.h>
 #include <StatesEngine/StatesEngine.hpp>
 
-void WarriorAi::UpdateAnimation()
+namespace GameEngine
+{
+void WarriorAi::UpdateAnimation ()
 {
     Urho3D::RigidBody2D *body = node_->GetComponent <Urho3D::RigidBody2D> ();
     Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
@@ -61,16 +62,16 @@ void WarriorAi::UpdateAnimation()
 
 UnitInterface *WarriorAi::GetNearestEnemy ()
 {
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
-    Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > *units = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
+    Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > units = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
 
-    if (!units->Empty ())
+    if (!units.Empty ())
     {
-        UnitInterface *nearest = 0;
+        Urho3D::SharedPtr <UnitInterface> nearest;
         float nearestDistance = 999999;
-        for (int index = 0; index < units->Size (); index++)
+        for (int index = 0; index < units.Size (); index++)
         {
-            UnitInterface *unit = units->At (index);
+            Urho3D::SharedPtr <UnitInterface> unit = units.At (index);
             if (unit && unit != this && unit->GetTeam () != this->GetTeam () &&
                     unit->GetLives () >= 0.0f)
             {
@@ -83,17 +84,13 @@ UnitInterface *WarriorAi::GetNearestEnemy ()
             }
         }
 
-        delete units;
         if (nearestDistance <= scanningRadius_)
             return nearest;
         else
             return 0;
     }
     else
-    {
-        delete units;
         return 0;
-    }
 }
 
 void WarriorAi::UpdateAi (UnitInterface *enemy, float timeStep)
@@ -130,10 +127,10 @@ void WarriorAi::UpdateAi (UnitInterface *enemy, float timeStep)
             else
                 offset = 1;
 
-            if (!IngameStateFunctions::IsTileEmpty (currentPosition.x_ + offset, currentPosition.y_, wallsLayer) ||
-                    (IngameStateFunctions::IsTileEmpty (currentPosition.x_ + offset, currentPosition.y_ - 1, wallsLayer) &&
-                     IngameStateFunctions::IsTileEmpty (currentPosition.x_ + offset, currentPosition.y_ - 2, wallsLayer) &&
-                     IngameStateFunctions::IsTileEmpty (currentPosition.x_ + offset, currentPosition.y_ - 3, wallsLayer)))
+            if (!IsTileEmpty (currentPosition.x_ + offset, currentPosition.y_, wallsLayer) ||
+                    (IsTileEmpty (currentPosition.x_ + offset, currentPosition.y_ - 1, wallsLayer) &&
+                     IsTileEmpty (currentPosition.x_ + offset, currentPosition.y_ - 2, wallsLayer) &&
+                     IsTileEmpty (currentPosition.x_ + offset, currentPosition.y_ - 3, wallsLayer)))
                 Jump ();
         }
     }
@@ -157,7 +154,7 @@ void WarriorAi::UpdateAi (UnitInterface *enemy, float timeStep)
     }
 }
 
-Urho3D::TileMapLayer2D *WarriorAi::FindWallsLayer()
+Urho3D::TileMapLayer2D *WarriorAi::FindWallsLayer ()
 {
     Urho3D::TileMap2D *tileMap = tileMapNode_->GetComponent <Urho3D::TileMap2D> ();
     for (int index = 0; index < tileMap->GetNumLayers (); index++)
@@ -244,27 +241,27 @@ void WarriorAi::SetScanningRadius (float scanningRadius)
     scanningRadius_ = scanningRadius;
 }
 
-float WarriorAi::GetNewDecinisionTime()
+float WarriorAi::GetNewDecinisionTime ()
 {
     return newDecinisionTime_;
 }
 
-void WarriorAi::SetNewDecinisionTime(float newDecinisionTime)
+void WarriorAi::SetNewDecinisionTime (float newDecinisionTime)
 {
     newDecinisionTime_ = newDecinisionTime;
 }
 
-Urho3D::Node *WarriorAi::GetTileMapNode()
+Urho3D::Node *WarriorAi::GetTileMapNode ()
 {
     return tileMapNode_;
 }
 
-void WarriorAi::SetTileMapNode(Urho3D::Node *tileMapNode)
+void WarriorAi::SetTileMapNode (Urho3D::Node *tileMapNode)
 {
     tileMapNode_ = tileMapNode;
 }
 
-void WarriorAi::SetTileMapNode(Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
+void WarriorAi::SetTileMapNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
 {
     SetTileMapNode (FindNode (context_, wayToNode, scene));
 }
@@ -273,4 +270,4 @@ WarriorAi::~WarriorAi ()
 {
     Dispose ();
 }
-
+}

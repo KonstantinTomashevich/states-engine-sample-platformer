@@ -1,4 +1,4 @@
-﻿#include <Urho3D/Scene/Scene.h>
+#include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Graphics/Camera.h>
 #include <Urho3D/Graphics/Graphics.h>
 #include <Urho3D/Audio/SoundListener.h>
@@ -20,14 +20,17 @@
 #include <StatesEngine/StatesEngine.hpp>
 #include <StatesEngine/SceneContainer.hpp>
 #include "InitIngameState.hpp"
-#include "IngameCameraUpdater.hpp"
-#include "IngamePlayerController.hpp"
 #include "IngameHud.hpp"
-#include "Constants.hpp"
-#include "IngameEventsHandler.hpp"
-#include "WarriorAi.hpp"
-#include "Utils.hpp"
 
+#include <GameEngine/IngameCameraUpdater.hpp>
+#include <GameEngine/IngamePlayerController.hpp>
+#include <GameEngine/Constants.hpp>
+#include <GameEngine/IngameEventsHandler.hpp>
+#include <GameEngine/WarriorAi.hpp>
+#include <GameEngine/Utils.hpp>
+
+namespace FrontendCXX
+{
 void IngameStateFunctions::ParseTileMap (Urho3D::Context *context, Urho3D::Node *tileMapNode)
 {
     Urho3D::TileMap2D *tileMap = tileMapNode->GetComponent <Urho3D::TileMap2D> ();
@@ -57,7 +60,7 @@ bool IngameStateFunctions::ParseObjectsLayer (
         Urho3D::Context *context, Urho3D::Node *objectsNode,
         Urho3D::TileMapLayer2D *layer)
 {
-    StatesEngine::StatesEngine *statesEngine = context->GetSubsystem <StatesEngine::StatesEngine> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     Urho3D::ResourceCache *cache = context->GetSubsystem <Urho3D::ResourceCache> ();
     for (int objectIndex = 0; objectIndex < layer->GetNumObjects (); objectIndex++)
     {
@@ -77,8 +80,8 @@ bool IngameStateFunctions::ParseObjectsLayer (
             player->SetName ("player");
             player->SetPosition (Urho3D::Vector3 (object->GetPosition ()));
 
-            Urho3D::SharedPtr <IngamePlayerController> playerController =
-                    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <IngamePlayerController> ();
+            Urho3D::SharedPtr <GameEngine::IngamePlayerController> playerController =
+                    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::IngamePlayerController> ();
             playerController->SetNode (player);
             playerController->SetTeam (Constants::PLAYER_TEAM_ID);
             if (Urho3D::GetPlatform () != "Android" && Urho3D::GetPlatform () != "iOS")
@@ -93,7 +96,8 @@ bool IngameStateFunctions::ParseObjectsLayer (
             orc->SetName ("orc");
             orc->SetPosition (Urho3D::Vector3 (object->GetPosition ()));
 
-            Urho3D::SharedPtr <WarriorAi> warriorAi = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <WarriorAi> ();
+            Urho3D::SharedPtr <GameEngine::WarriorAi> warriorAi = statesEngine->
+                    GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::WarriorAi> ();
             warriorAi->SetNode (orc);
             warriorAi->SetTeam (Constants::ORCS_TEAM_ID);
             warriorAi->SetTileMapNode (layer->GetTileMap ()->GetNode ());
@@ -108,10 +112,10 @@ bool IngameStateFunctions::ParseWallsLayer (Urho3D::Context *context, Urho3D::Ti
     for (int x = 0; x < layer->GetWidth (); x++)
         for (int y = 0; y < layer->GetHeight (); y++)
         {
-            if (!IsTileEmpty (x, y, layer))
+            if (!GameEngine::IsTileEmpty (x, y, layer))
             {
                 Urho3D::Node *node = layer->GetTileNode (x, y);
-                if (CountOfEmptyTilesAround (x, y, layer) > 0)
+                if (GameEngine::CountOfEmptyTilesAround (x, y, layer) > 0)
                 {
                     node->CreateComponent <Urho3D::RigidBody2D> ();
                     node->SetVar (
@@ -127,40 +131,16 @@ bool IngameStateFunctions::ParseWallsLayer (Urho3D::Context *context, Urho3D::Ti
     return true;
 }
 
-bool IngameStateFunctions::IsTileMapCoordinateValid (float x, float y, Urho3D::TileMap2D *tileMap)
-{
-    return (x >= 0 && y >= 0 && x <= tileMap->GetInfo ().width_ &&
-            y <= tileMap->GetInfo ().height_);
-}
-
-bool IngameStateFunctions::IsTileEmpty (int x, int y, Urho3D::TileMapLayer2D *layer)
-{
-    if (IsTileMapCoordinateValid (x, y, layer->GetTileMap ()))
-        return (!layer->GetTileNode (x, y));
-    else
-        return false;
-}
-
-int IngameStateFunctions::CountOfEmptyTilesAround (int tileX, int tileY, Urho3D::TileMapLayer2D *layer)
-{
-    int count = 0;
-    for (int x = tileX - 1; x < tileX + 2; x++)
-        for (int y = tileY - 1; y < tileY + 2; y++)
-            if (x != tileX && y != tileY && IsTileEmpty (x, y, layer))
-                count++;
-    return count;
-}
-
 void IngameStateFunctions::InitIngameState (Urho3D::Context *context, Urho3D::String pathToLevel)
 {
-    RegisterType <StatesEngine::SceneContainer> (context);
-    RegisterType <IngameCameraUpdater> (context);
-    RegisterType <IngameEventsHandler> (context);
-    RegisterType <IngameHud> (context);
-    RegisterType <WarriorAi> (context);
-    RegisterType <IngamePlayerController> (context);
+    GameEngine::RegisterType <StatesEngine::SceneContainer> (context);
+    GameEngine::RegisterType <IngameHud> (context);
+    GameEngine::RegisterType <GameEngine::IngameCameraUpdater> (context);
+    GameEngine::RegisterType <GameEngine::IngameEventsHandler> (context);
+    GameEngine::RegisterType <GameEngine::WarriorAi> (context);
+    GameEngine::RegisterType <GameEngine::IngamePlayerController> (context);
 
-    StatesEngine::StatesEngine *statesEngine = context->GetSubsystem <StatesEngine::StatesEngine> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->DisposeAll ("any");
     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->RemoveAll ("any");
     Urho3D::ResourceCache *cache = context->GetSubsystem <Urho3D::ResourceCache> ();
@@ -191,8 +171,8 @@ void IngameStateFunctions::InitIngameState (Urho3D::Context *context, Urho3D::St
     audio->SetListener (cameraNode->GetComponent <Urho3D::SoundListener> ());
 
     ParseTileMap (context, tileMapNode);
-    Urho3D::SharedPtr <IngameCameraUpdater> cameraUpdater =
-            statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <IngameCameraUpdater> ();
+    Urho3D::SharedPtr <GameEngine::IngameCameraUpdater> cameraUpdater =
+            statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::IngameCameraUpdater> ();
     cameraUpdater->SetCameraNode (cameraNode);
     cameraUpdater->SetPlayerNode ("/tileMap/objects/player/");
     cameraUpdater->SetTileMapNode (tileMapNode);
@@ -204,5 +184,6 @@ void IngameStateFunctions::InitIngameState (Urho3D::Context *context, Urho3D::St
         ingameHud->SetIsShowTouchControls (false);
     else
         ingameHud->SetIsShowTouchControls (true);
-    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <IngameEventsHandler> ();
+    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::IngameEventsHandler> ();
+}
 }

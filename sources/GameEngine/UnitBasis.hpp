@@ -1,10 +1,12 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Scene/Node.h>
 #include <StatesEngine/SceneContainer.hpp>
 #include "UnitInterface.hpp"
 
+namespace GameEngine
+{
 class UnitBasis : public UnitInterface
 {
 URHO3D_OBJECT (UnitBasis, UnitInterface)
@@ -56,3 +58,4 @@ public:
     virtual float GetLives ();
     virtual ~UnitBasis ();
 };
+}

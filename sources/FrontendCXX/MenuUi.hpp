@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "MenuUiListener.hpp"
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Core/Context.h>
@@ -11,6 +11,8 @@
 #include <Urho3D/UI/Sprite.h>
 #include <Urho3D/UI/Text.h>
 
+namespace FrontendCXX
+{
 class MenuUi : public StatesEngine::StateObject
 {
 URHO3D_OBJECT (MenuUi, StatesEngine::StateObject)
@@ -41,3 +43,4 @@ public:
     virtual bool Dispose ();
     virtual ~MenuUi ();
 };
+}

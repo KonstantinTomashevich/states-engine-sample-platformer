@@ -1,11 +1,12 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Math/StringHash.h>
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Core/Variant.h>
 #include <Urho3D/Core/Object.h>
 
+namespace FrontendCXX
+{
 class IngameHud;
-
 class IngameHudListener : public Urho3D::Object
 {
 URHO3D_OBJECT (IngameHudListener, Object)
@@ -25,4 +26,5 @@ public:
     void JoystickDragMove (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void JoystickDragEnd (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 };
+}
 

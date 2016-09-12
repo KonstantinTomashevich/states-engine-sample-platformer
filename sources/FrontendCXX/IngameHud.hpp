@@ -1,9 +1,9 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Math/StringHash.h>
 #include <StatesEngine/StateObject.hpp>
-#include "IngamePlayerController.hpp"
+#include <GameEngine/IngamePlayerController.hpp>
 #include "IngameHudListener.hpp"
 
 #include <Urho3D/UI/UI.h>
@@ -12,16 +12,19 @@
 #include <Urho3D/UI/Sprite.h>
 #include <Urho3D/UI/Text.h>
 
+namespace FrontendCXX
+{
 class IngameHud : public StatesEngine::StateObject
 {
 URHO3D_OBJECT (IngameHud, StatesEngine::StateObject)
 friend class IngameHudListener;
 protected:
-    IngamePlayerController *playerController_;
+    GameEngine::IngamePlayerController *playerController_;
     IngameHudListener listener_;
     int lastWidth_;
     int lastHeight_;
     bool showTouchControls_;
+
     Urho3D::Button *screenBackground_;
     Urho3D::Sprite *coinIcon_;
     Urho3D::Text *coinsText_;
@@ -55,11 +58,12 @@ public:
     virtual bool Update (float timeStep);
     virtual bool Dispose ();
 
-    IngamePlayerController *GetPlayerController ();
-    void SetPlayerController (IngamePlayerController *playerController);
+    GameEngine::IngamePlayerController *GetPlayerController ();
+    void SetPlayerController (GameEngine::IngamePlayerController *playerController);
     void SetPauseWindowVisible (bool isEnabled);
 
     bool IsSnowTouchControls ();
     void SetIsShowTouchControls (bool showTouchControls);
     ~IngameHud ();
 };
+}

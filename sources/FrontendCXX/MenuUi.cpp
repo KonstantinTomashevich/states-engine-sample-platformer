@@ -1,5 +1,5 @@
-﻿#include "MenuUi.hpp"
-#include "Constants.hpp"
+#include "MenuUi.hpp"
+#include <GameEngine/Constants.hpp>
 #include <StatesEngine/StatesEngine.hpp>
 
 #include <Urho3D/Graphics/Graphics.h>
@@ -8,7 +8,9 @@
 #include <Urho3D/UI/Font.h>
 #include <Urho3D/IO/Log.h>
 
-void MenuUi::InitUI()
+namespace FrontendCXX
+{
+void MenuUi::InitUI ()
 {
     Urho3D::UI *ui = context_->GetSubsystem <Urho3D::UI> ();
     Urho3D::ResourceCache *cache = context_->GetSubsystem <Urho3D::ResourceCache> ();
@@ -66,7 +68,7 @@ void MenuUi::InitUI()
     exitButtonText_->SetAlignment (Urho3D::HA_CENTER, Urho3D::VA_CENTER);
 }
 
-void MenuUi::ResizeUI(int width, int height)
+void MenuUi::ResizeUI (int width, int height)
 {
     background_->SetSize (height * 2.0f, height);
     background_->SetPosition (0, 0);
@@ -88,12 +90,12 @@ void MenuUi::ResizeUI(int width, int height)
     exitButtonText_->SetFont (exitButtonText_->GetFont (), height * 0.07f);
 }
 
-void MenuUi::UpdateUI(float timeStep)
+void MenuUi::UpdateUI (float timeStep)
 {
 
 }
 
-void MenuUi::HideUI()
+void MenuUi::HideUI ()
 {
     level1Button_->Remove ();
     level1ButtonText_->Remove ();
@@ -106,7 +108,7 @@ void MenuUi::HideUI()
     background_->Remove ();
 }
 
-MenuUi::MenuUi(Urho3D::Context *context) : StatesEngine::StateObject (context), listener_ (this)
+MenuUi::MenuUi (Urho3D::Context *context) : StatesEngine::StateObject (context), listener_ (this)
 {
     lastWidth_ = 0;
     lastHeight_ = 0;
@@ -122,7 +124,7 @@ MenuUi::MenuUi(Urho3D::Context *context) : StatesEngine::StateObject (context), 
     background_ = 0;
 }
 
-bool MenuUi::Init()
+bool MenuUi::Init ()
 {
     InitUI ();
     Urho3D::Graphics *graphics = context_->GetSubsystem <Urho3D::Graphics> ();
@@ -134,7 +136,7 @@ bool MenuUi::Init()
     return true;
 }
 
-bool MenuUi::Update(float timeStep)
+bool MenuUi::Update (float timeStep)
 {
     Urho3D::Graphics *graphics = context_->GetSubsystem <Urho3D::Graphics> ();
     if (lastWidth_ != graphics->GetWidth () || lastHeight_ != graphics->GetHeight ())
@@ -147,7 +149,7 @@ bool MenuUi::Update(float timeStep)
     return true;
 }
 
-bool MenuUi::Dispose()
+bool MenuUi::Dispose ()
 {
     if (ready_)
     {
@@ -158,8 +160,8 @@ bool MenuUi::Dispose()
     return true;
 }
 
-MenuUi::~MenuUi()
+MenuUi::~MenuUi ()
 {
     Dispose ();
 }
-
+}

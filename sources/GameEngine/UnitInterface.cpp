@@ -1,7 +1,15 @@
-﻿#include "UnitInterface.hpp"
+#include "UnitInterface.hpp"
 
-UnitInterface::UnitInterface(Urho3D::Context *context) : StateObject (context)
+namespace GameEngine
+{
+UnitInterface::UnitInterface (Urho3D::Context *context) : StateObject (context)
 {
 
+}
+
+UnitInterface::~UnitInterface ()
+{
+
+}
 }
 

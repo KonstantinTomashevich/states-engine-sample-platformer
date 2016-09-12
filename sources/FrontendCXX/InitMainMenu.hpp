@@ -1,8 +1,10 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Core/Context.h>
 
-class MainMenuFunctions
+namespace FrontendCXX
 {
-public:
-    static void InitMainMenu (Urho3D::Context *context);
-};
+namespace MainMenuFunctions
+{
+void InitMainMenu (Urho3D::Context *context);
+}
+}

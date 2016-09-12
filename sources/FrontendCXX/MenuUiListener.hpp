@@ -1,11 +1,12 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Math/StringHash.h>
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Core/Variant.h>
 #include <Urho3D/Core/Object.h>
 
+namespace FrontendCXX
+{
 class MenuUi;
-
 class MenuUiListener : public Urho3D::Object
 {
 URHO3D_OBJECT (MenuUiListener, Object)
@@ -22,3 +23,4 @@ public:
     void LevelClicked (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void ExitClicked (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 };
+}

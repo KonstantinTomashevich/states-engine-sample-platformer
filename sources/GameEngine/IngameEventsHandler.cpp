@@ -1,4 +1,4 @@
-﻿#include "IngameEventsHandler.hpp"
+#include "IngameEventsHandler.hpp"
 #include "Constants.hpp"
 #include "UnitInterface.hpp"
 
@@ -7,6 +7,8 @@
 #include <StatesEngine/StatesEngine.hpp>
 #include <Urho3D/IO/Log.h>
 
+namespace GameEngine
+{
 void IngameEventsHandler::PickupCoin (Urho3D::Node *coin)
 {
     float cash = coin->GetVar (Constants::COIN_CASH_VAR_HASH).GetFloat ();
@@ -19,9 +21,9 @@ IngameEventsHandler::IngameEventsHandler (Urho3D::Context *context) : StateObjec
     isSubscribed_ = false;
 }
 
-bool IngameEventsHandler::Init()
+bool IngameEventsHandler::Init ()
 {
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     if (!playerController_)
         playerController_ = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <IngamePlayerController> ();
 
@@ -42,12 +44,12 @@ bool IngameEventsHandler::Init()
     }
 }
 
-bool IngameEventsHandler::Update(float timeStep)
+bool IngameEventsHandler::Update (float timeStep)
 {
 
 }
 
-bool IngameEventsHandler::Dispose()
+bool IngameEventsHandler::Dispose ()
 {
     UnsubscribeFromAllEvents ();
     ready_ = false;
@@ -65,7 +67,7 @@ void IngameEventsHandler::SetPlayerController (Urho3D::SharedPtr <IngamePlayerCo
     playerController_ = playerController;
 }
 
-void IngameEventsHandler::OnPhysicsCollision(Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void IngameEventsHandler::OnPhysicsCollision (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     Urho3D::Node *nodeA = (Urho3D::Node *)
             eventData [Urho3D::PhysicsBeginContact2D::P_NODEA].GetPtr ();
@@ -89,13 +91,13 @@ void IngameEventsHandler::OnAttackInArea (Urho3D::StringHash eventType, Urho3D::
             Constants::AttackInAreaData::ATTACKER_TEAM_ID].GetStringHash ();
     float damage = eventData [Constants::AttackInAreaData::DAMAGE].GetFloat ();
 
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
-    Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > *units = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
+    Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > units = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
 
-    if (!units->Empty ())
-        for (int index = 0; index < units->Size (); index++)
+    if (!units.Empty ())
+        for (int index = 0; index < units.Size (); index++)
         {
-            UnitInterface *unitInterface = units->At (index);
+            Urho3D::SharedPtr <UnitInterface> unitInterface = units.At (index);
             Urho3D::Rect unitRect = unitInterface->GetLocalRect ();
             unitRect.min_ += Urho3D::Vector2 (unitInterface->GetPosition ().x_,
                                               unitInterface->GetPosition ().y_);
@@ -108,11 +110,11 @@ void IngameEventsHandler::OnAttackInArea (Urho3D::StringHash eventType, Urho3D::
                     (unitRect.max_.y_ >= rect.min_.y_ && unitRect.max_.y_ <= rect.max_.y_)))
                 unitInterface->OnAtttack (teamId, damage);
         }
-    delete units;
 }
 
-IngameEventsHandler::~IngameEventsHandler()
+IngameEventsHandler::~IngameEventsHandler ()
 {
 
+}
 }
 

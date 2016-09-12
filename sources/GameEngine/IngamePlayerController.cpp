@@ -1,4 +1,4 @@
-﻿#include "IngamePlayerController.hpp"
+#include "IngamePlayerController.hpp"
 #include "Utils.hpp"
 #include "Constants.hpp"
 
@@ -12,7 +12,9 @@
 #include <Urho3D/Urho2D/SpriterData2D.h>
 #include <Urho3D/Core/Variant.h>
 
-void IngamePlayerController::KeyboardToJoystickCoordinates()
+namespace GameEngine
+{
+void IngamePlayerController::KeyboardToJoystickCoordinates ()
 {
     lastJoystickCoordinates_ = Urho3D::Vector2::ZERO;
     isAttackPressed_ = false;
@@ -99,7 +101,7 @@ IngamePlayerController::IngamePlayerController (Urho3D::Context *context) : Unit
     lives_ = 100.0f;
 }
 
-bool IngamePlayerController::Init()
+bool IngamePlayerController::Init ()
 {
     if (node_)
     {
@@ -113,7 +115,7 @@ bool IngamePlayerController::Init()
     }
 }
 
-bool IngamePlayerController::Update(float timeStep)
+bool IngamePlayerController::Update (float timeStep)
 {
     if (timeFromDie_ <= 0.0f)
     {
@@ -159,7 +161,7 @@ bool IngamePlayerController::Update(float timeStep)
     }
 }
 
-bool IngamePlayerController::Dispose()
+bool IngamePlayerController::Dispose ()
 {
     ready_ = false;
     return true;
@@ -175,7 +177,7 @@ void IngamePlayerController::SetIsUseKeyboardInsteadOfJoystick (bool useKeyboard
     useKeyboardInsteadOfJoystick_ = useKeyboardInsteadOfJoystick;
 }
 
-Urho3D::Vector2 IngamePlayerController::GetLastJoystickCoordinates()
+Urho3D::Vector2 IngamePlayerController::GetLastJoystickCoordinates ()
 {
     return lastJoystickCoordinates_;
 }
@@ -198,7 +200,7 @@ void IngamePlayerController::SetControlls (
     lastJoystickCoordinates_ = lastJoystickCoordinates;
 }
 
-bool IngamePlayerController::OnAtttack(Urho3D::StringHash attackerTeam, float damage)
+bool IngamePlayerController::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
 {
     if (team_ != attackerTeam && !IsBlockingNow () && lives_ >= 0)
     {
@@ -213,17 +215,18 @@ bool IngamePlayerController::OnAtttack(Urho3D::StringHash attackerTeam, float da
     }
 }
 
-float IngamePlayerController::GetCoins()
+float IngamePlayerController::GetCoins ()
 {
     return coins_;
 }
 
-void IngamePlayerController::SetCoins(float coins)
+void IngamePlayerController::SetCoins (float coins)
 {
     coins_ = coins;
 }
 
-IngamePlayerController::~IngamePlayerController()
+IngamePlayerController::~IngamePlayerController ()
 {
     Dispose ();
+}
 }

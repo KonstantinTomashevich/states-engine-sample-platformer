@@ -1,4 +1,4 @@
-﻿#include "IngameCameraUpdater.hpp"
+#include "IngameCameraUpdater.hpp"
 #include <StatesEngine/StatesEngine.hpp>
 #include <Urho3D/Urho2D/TileMap2D.h>
 #include <Urho3D/Urho2D/TmxFile2D.h>
@@ -6,7 +6,9 @@
 #include <Urho3D/IO/Log.h>
 #include "Utils.hpp"
 
-IngameCameraUpdater::IngameCameraUpdater(Urho3D::Context *context) : StateObject (context)
+namespace GameEngine
+{
+IngameCameraUpdater::IngameCameraUpdater (Urho3D::Context *context) : StateObject (context)
 {
     cameraNode_ = 0;
     playerNode_ = 0;
@@ -95,18 +97,19 @@ Urho3D::Node *IngameCameraUpdater::GetTileMapNode()
     return tileMapNode_;
 }
 
-void IngameCameraUpdater::SetTileMapNode(Urho3D::Node *tileMapNode)
+void IngameCameraUpdater::SetTileMapNode (Urho3D::Node *tileMapNode)
 {
     tileMapNode_ = tileMapNode;
 }
 
-void IngameCameraUpdater::SetTileMapNode(Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
+void IngameCameraUpdater::SetTileMapNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
 {
     SetTileMapNode (FindNode (context_, wayToNode, scene));
 }
 
-IngameCameraUpdater::~IngameCameraUpdater()
+IngameCameraUpdater::~IngameCameraUpdater ()
 {
     Dispose ();
+}
 }
 

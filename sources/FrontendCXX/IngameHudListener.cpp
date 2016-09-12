@@ -1,11 +1,13 @@
-﻿#include "IngameHudListener.hpp"
+#include "IngameHudListener.hpp"
 #include "IngameHud.hpp"
-#include "UnitInterface.hpp"
 #include "InitMainMenu.hpp"
 
 #include <Urho3D/UI/UIEvents.h>
 #include <StatesEngine/StatesEngine.hpp>
+#include <GameEngine/UnitInterface.hpp>
 
+namespace FrontendCXX
+{
 IngameHudListener::IngameHudListener (IngameHud *hud) : Urho3D::Object (hud->GetContext ())
 {
     hud_ = hud;
@@ -25,13 +27,13 @@ void IngameHudListener::Subscribe ()
     }
 }
 
-void IngameHudListener::Unsubscribe()
+void IngameHudListener::Unsubscribe ()
 {
     UnsubscribeFromAllEvents ();
     isSubscribed_ = false;
 }
 
-IngameHudListener::~IngameHudListener()
+IngameHudListener::~IngameHudListener ()
 {
     Unsubscribe ();
 }
@@ -39,30 +41,31 @@ IngameHudListener::~IngameHudListener()
 void IngameHudListener::PauseClicked (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     hud_->SetPauseWindowVisible (true);
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
-    Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > *units = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
+    Urho3D::Vector <Urho3D::SharedPtr <GameEngine::UnitInterface> > units = statesEngine->
+            GetState <StatesEngine::StateObjectsManager> ()->GetAll <GameEngine::UnitInterface> ();
 
-    if (!units->Empty ())
-        for (int index = 0; index < units->Size (); index++)
-            if (units->At (index))
-                units->At (index)->SetIsWillBeUpdated (false);
-    delete units;
+    if (!units.Empty ())
+        for (int index = 0; index < units.Size (); index++)
+            if (units.At (index))
+                units.At (index)->SetIsWillBeUpdated (false);
 
-    StatesEngine::SceneContainer *scene = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <StatesEngine::SceneContainer> ();
+    StatesEngine::SceneContainer *scene = statesEngine->
+            GetState <StatesEngine::StateObjectsManager> ()->Get <StatesEngine::SceneContainer> ();
     scene->Get ()->SetUpdateEnabled (false);
 }
 
 void IngameHudListener::ResumeClicked (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     hud_->SetPauseWindowVisible (false);
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
-    Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > *units = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
+    Urho3D::Vector <Urho3D::SharedPtr <GameEngine::UnitInterface> > units = statesEngine->
+            GetState <StatesEngine::StateObjectsManager> ()->GetAll <GameEngine::UnitInterface> ();
 
-    if (!units->Empty ())
-        for (int index = 0; index < units->Size (); index++)
-            if (units->At (index))
-                units->At (index)->SetIsWillBeUpdated (true);
-    delete units;
+    if (!units.Empty ())
+        for (int index = 0; index < units.Size (); index++)
+            if (units.At (index))
+                units.At (index)->SetIsWillBeUpdated (true);
 
     StatesEngine::SceneContainer *scene = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <StatesEngine::SceneContainer> ();
     scene->Get ()->SetUpdateEnabled (true);
@@ -98,4 +101,4 @@ void IngameHudListener::JoystickDragEnd (Urho3D::StringHash eventType, Urho3D::V
     hud_->joystickKnob_->SetPosition (hud_->joystick_->GetWidth () / 2 - hud_->joystickKnob_->GetWidth () / 2,
                                       hud_->joystick_->GetHeight () / 2 - hud_->joystickKnob_->GetHeight () / 2);
 }
-
+}

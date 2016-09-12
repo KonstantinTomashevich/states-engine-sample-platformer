@@ -1,4 +1,5 @@
-﻿include_directories (${STATES_ENGINE_SDK}/include)
+include_directories (${STATES_ENGINE_SDK}/include)
+include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory (GameEngine)
 add_subdirectory (FrontendCXX)
 add_subdirectory (FrontendExecutor)

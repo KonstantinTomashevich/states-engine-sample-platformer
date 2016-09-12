@@ -1,4 +1,4 @@
-﻿#include <Urho3D/Container/Ptr.h>
+#include <Urho3D/Container/Ptr.h>
 #include <Urho3D/Graphics/Graphics.h>
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Scene/Scene.h>
@@ -12,10 +12,8 @@
 #include <StatesEngine/StatesEngine.hpp>
 #include <StatesEngine/StateObjectsManager.hpp>
 #include <StatesEngine/SceneContainer.hpp>
-
+#include <FrontendCXX/InitMainMenu.hpp>
 #include "Urho3DApplication.hpp"
-#include "InitIngameState.hpp"
-#include "InitMainMenu.hpp"
 
 Urho3DApplication::Urho3DApplication (Urho3D::Context *context) : Urho3D::Application(context)
 {
@@ -36,12 +34,12 @@ void Urho3DApplication::Start ()
     context_->RegisterSubsystem (this);
     input->SetTouchEmulation (true);
 
-    StatesEngine::StatesEngine *statesEngine = new StatesEngine::StatesEngine (context_);
+    StatesEngine::StatesEngineSubsystem *statesEngine = new StatesEngine::StatesEngineSubsystem (context_);
     statesEngine->Init ();
     context_->RegisterSubsystem (statesEngine);
     statesEngine->SetupState (Urho3D::SharedPtr <StatesEngine::StateObjectsManager> (new StatesEngine::StateObjectsManager (context_)));
 
-    MainMenuFunctions::InitMainMenu (context_);
+    FrontendCXX::MainMenuFunctions::InitMainMenu (context_);
     SubscribeToEvent (Urho3D::E_POSTRENDERUPDATE, URHO3D_HANDLER (Urho3DApplication, DrawDebug));
     Urho3D::SetRandomSeed (Urho3D::Time::GetTimeSinceEpoch ());
 
@@ -53,7 +51,7 @@ void Urho3DApplication::Start ()
 
 void Urho3DApplication::Stop ()
 {
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     statesEngine->DisposeState ();
     context_->RemoveSubsystem ("StatesEngine");
 }
@@ -70,7 +68,7 @@ void Urho3DApplication::SetIsDrawDebug (bool isDrawDebug)
 
 void Urho3DApplication::DrawDebug (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     if (isDrawDebug_ && statesEngine && statesEngine->HasState () &&
             statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <StatesEngine::SceneContainer> () &&
             statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <StatesEngine::SceneContainer> ()->Get ())

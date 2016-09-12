@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Scene/Node.h>
@@ -8,6 +8,8 @@
 #include <Urho3D/Urho2D/TileMapLayer2D.h>
 #include "UnitBasis.hpp"
 
+namespace GameEngine
+{
 class WarriorAi : public UnitBasis
 {
 URHO3D_OBJECT (WarriorAi, UnitBasis)
@@ -37,3 +39,4 @@ public:
     void SetTileMapNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene = 0);
     virtual ~WarriorAi ();
 };
+}
