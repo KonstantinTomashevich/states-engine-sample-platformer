@@ -21,6 +21,8 @@ protected:
     bool isAttackingNow_;
     float lives_;
     float maxLives_;
+    float blockEfficiency_;
+    float blockEfficiencyRegeneration_;
 
     float livesRegeneration_;
     float timeFromAttackStart_;
@@ -64,6 +66,8 @@ public:
     virtual float GetLives ();
     virtual float GetMaxLives ();
     virtual float GetLivesRegeneration ();
+    float GetBlockEfficiency ();
+    float GetBlockEfficiencyRegeneration ();
     virtual ~UnitBasis ();
 };
 }

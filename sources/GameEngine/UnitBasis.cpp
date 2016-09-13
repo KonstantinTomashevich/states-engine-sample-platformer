@@ -57,7 +57,8 @@ void UnitBasis::Jump ()
 void UnitBasis::SetToBlock ()
 {
     isAttackingNow_ = false;
-    isBlockingNow_ = true;
+    if (blockEfficiency_ > 0.0f)
+        isBlockingNow_ = true;
     timeFromAttackStart_ = 0.0f;
 }
 
@@ -129,6 +130,8 @@ UnitBasis::UnitBasis (Urho3D::Context *context) : UnitInterface (context)
     livesRegeneration_ = 3.0f;
     timeFromAttackStart_ = 0.0f;
     attackDamage_ = 10.0f;
+    blockEfficiency_ = 1.0f;
+    blockEfficiencyRegeneration_ = 0.1f;
 
     isBlockingNow_ = false;
     isAttackingNow_ = false;
@@ -162,8 +165,12 @@ bool UnitBasis::Update (float timeStep)
     {
         if (lives_ <= maxLives_)
             lives_ += timeStep * livesRegeneration_;
+
         if (timeBeforeNewJump_ >= 0.0f)
             timeBeforeNewJump_ -= timeStep;
+
+        if (blockEfficiency_ < 1.0f)
+            blockEfficiency_ += blockEfficiencyRegeneration_ * timeStep;
     }
 
     return true;
@@ -191,16 +198,28 @@ bool UnitBasis::IsBlockingNow ()
 
 bool UnitBasis::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
 {
-    // TODO: Now "block" can defend from all attacks. I think that it isn't good.
-    if (team_ != attackerTeam && !IsBlockingNow () && lives_ >= 0)
+    if (team_ != attackerTeam && lives_ >= 0)
     {
-        lives_ -= damage;
-        Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
-        if (sprite && lives_ > 0.0f)
+        if (isBlockingNow_)
         {
-            sprite->SetSpeed (1.0f);
-            sprite->SetAnimation ("damage");
-            timeFromLastDamage_ = 0.0f;
+            lives_ -= damage *(1 - blockEfficiency_);
+            blockEfficiency_ -= 0.2f;
+        }
+        else
+            lives_ -= damage;
+
+        if (blockEfficiency_ <= 0.0f)
+            isBlockingNow_ = false;
+
+        if (!isBlockingNow_)
+        {
+            Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
+            if (sprite && lives_ > 0.0f)
+            {
+                sprite->SetSpeed (1.0f);
+                sprite->SetAnimation ("damage");
+                timeFromLastDamage_ = 0.0f;
+            }
         }
     }
 }
@@ -278,6 +297,16 @@ float UnitBasis::GetMaxLives ()
 float UnitBasis::GetLivesRegeneration ()
 {
     return livesRegeneration_;
+}
+
+float UnitBasis::GetBlockEfficiency ()
+{
+    return blockEfficiency_;
+}
+
+float UnitBasis::GetBlockEfficiencyRegeneration ()
+{
+    return blockEfficiencyRegeneration_;
 }
 
 UnitBasis::~UnitBasis ()

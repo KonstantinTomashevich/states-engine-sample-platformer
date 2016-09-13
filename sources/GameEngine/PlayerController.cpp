@@ -187,16 +187,32 @@ void PlayerController::SetControlls (bool isAttackPressed, bool isBlockPressed, 
 
 bool PlayerController::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
 {
-    if (team_ != attackerTeam && !IsBlockingNow () && lives_ >= 0)
+    if (team_ != attackerTeam && lives_ >= 0)
     {
-        lives_ -= damage;
-        Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
-        sprite->SetSpeed (1.0f);
-        if (Urho3D::Random () >= 0.5f)
-            sprite->SetAnimation ("damaged0");
+        if (isBlockingNow_)
+        {
+            lives_ -= damage *(1 - blockEfficiency_);
+            blockEfficiency_ -= 0.2f;
+        }
         else
-            sprite->SetAnimation ("damaged1");
-        timeFromLastDamage_ = 0.0f;
+            lives_ -= damage;
+
+        if (blockEfficiency_ <= 0.0f)
+            isBlockingNow_ = false;
+
+        if (!isBlockingNow_)
+        {
+            Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
+            if (sprite && lives_ > 0.0f)
+            {
+                sprite->SetSpeed (1.0f);
+                if (Urho3D::Random () >= 0.5f)
+                    sprite->SetAnimation ("damaged0");
+                else
+                    sprite->SetAnimation ("damaged1");
+                timeFromLastDamage_ = 0.0f;
+            }
+        }
     }
 }
 
