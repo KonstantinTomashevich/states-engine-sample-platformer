@@ -228,7 +228,7 @@ bool IngameHud::Init ()
 {
     StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     if (!playerController_)
-        playerController_ = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <GameEngine::IngamePlayerController> ();
+        playerController_ = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <GameEngine::PlayerController> ();
 
     if (playerController_)
     {
@@ -272,12 +272,12 @@ bool IngameHud::Dispose ()
     return true;
 }
 
-GameEngine::IngamePlayerController *IngameHud::GetPlayerController ()
+GameEngine::PlayerController *IngameHud::GetPlayerController ()
 {
     return playerController_;
 }
 
-void IngameHud::SetPlayerController (GameEngine::IngamePlayerController *playerController)
+void IngameHud::SetPlayerController (GameEngine::PlayerController *playerController)
 {
     playerController_ = playerController;
 }

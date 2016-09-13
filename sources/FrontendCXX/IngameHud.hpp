@@ -3,7 +3,7 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Math/StringHash.h>
 #include <StatesEngine/StateObject.hpp>
-#include <GameEngine/IngamePlayerController.hpp>
+#include <GameEngine/PlayerController.hpp>
 #include "IngameHudListener.hpp"
 
 #include <Urho3D/UI/UI.h>
@@ -19,7 +19,7 @@ class IngameHud : public StatesEngine::StateObject
 URHO3D_OBJECT (IngameHud, StatesEngine::StateObject)
 friend class IngameHudListener;
 protected:
-    GameEngine::IngamePlayerController *playerController_;
+    GameEngine::PlayerController *playerController_;
     IngameHudListener listener_;
     int lastWidth_;
     int lastHeight_;
@@ -58,8 +58,8 @@ public:
     virtual bool Update (float timeStep);
     virtual bool Dispose ();
 
-    GameEngine::IngamePlayerController *GetPlayerController ();
-    void SetPlayerController (GameEngine::IngamePlayerController *playerController);
+    GameEngine::PlayerController *GetPlayerController ();
+    void SetPlayerController (GameEngine::PlayerController *playerController);
     void SetPauseWindowVisible (bool isEnabled);
 
     bool IsSnowTouchControls ();

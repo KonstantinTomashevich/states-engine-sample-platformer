@@ -1,4 +1,4 @@
-#include "IngamePlayerController.hpp"
+#include "PlayerController.hpp"
 #include "Utils.hpp"
 #include "Constants.hpp"
 
@@ -14,7 +14,7 @@
 
 namespace GameEngine
 {
-void IngamePlayerController::KeyboardToJoystickCoordinates ()
+void PlayerController::KeyboardToJoystickCoordinates ()
 {
     lastJoystickCoordinates_ = Urho3D::Vector2::ZERO;
     isAttackPressed_ = false;
@@ -36,7 +36,7 @@ void IngamePlayerController::KeyboardToJoystickCoordinates ()
         isAttackPressed_ = true;
 }
 
-void IngamePlayerController::UpdateAnimation ()
+void PlayerController::UpdateAnimation ()
 {
     Urho3D::RigidBody2D *body = node_->GetComponent <Urho3D::RigidBody2D> ();
     Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
@@ -90,7 +90,7 @@ void IngamePlayerController::UpdateAnimation ()
     }
 }
 
-IngamePlayerController::IngamePlayerController (Urho3D::Context *context) : UnitBasis (context)
+PlayerController::PlayerController (Urho3D::Context *context) : UnitBasis (context)
 {
     node_ = 0;
     useKeyboardInsteadOfJoystick_ = false;
@@ -101,7 +101,7 @@ IngamePlayerController::IngamePlayerController (Urho3D::Context *context) : Unit
     lives_ = 100.0f;
 }
 
-bool IngamePlayerController::Init ()
+bool PlayerController::Init ()
 {
     if (node_)
     {
@@ -115,7 +115,7 @@ bool IngamePlayerController::Init ()
     }
 }
 
-bool IngamePlayerController::Update (float timeStep)
+bool PlayerController::Update (float timeStep)
 {
     if (timeFromDie_ <= 0.0f)
     {
@@ -161,38 +161,38 @@ bool IngamePlayerController::Update (float timeStep)
     }
 }
 
-bool IngamePlayerController::Dispose ()
+bool PlayerController::Dispose ()
 {
     ready_ = false;
     return true;
 }
 
-bool IngamePlayerController::IsUseKeyboardInsteadOfJoystick ()
+bool PlayerController::IsUseKeyboardInsteadOfJoystick ()
 {
     return useKeyboardInsteadOfJoystick_;
 }
 
-void IngamePlayerController::SetIsUseKeyboardInsteadOfJoystick (bool useKeyboardInsteadOfJoystick)
+void PlayerController::SetIsUseKeyboardInsteadOfJoystick (bool useKeyboardInsteadOfJoystick)
 {
     useKeyboardInsteadOfJoystick_ = useKeyboardInsteadOfJoystick;
 }
 
-Urho3D::Vector2 IngamePlayerController::GetLastJoystickCoordinates ()
+Urho3D::Vector2 PlayerController::GetLastJoystickCoordinates ()
 {
     return lastJoystickCoordinates_;
 }
 
-bool IngamePlayerController::IsAttackPressed ()
+bool PlayerController::IsAttackPressed ()
 {
     return isAttackPressed_;
 }
 
-bool IngamePlayerController::IsBlockPressed ()
+bool PlayerController::IsBlockPressed ()
 {
     return isBlockPressed_;
 }
 
-void IngamePlayerController::SetControlls (
+void PlayerController::SetControlls (
         bool isAttackPressed, bool isBlockPressed, Urho3D::Vector2 lastJoystickCoordinates)
 {
     isAttackPressed_ = isAttackPressed;
@@ -200,7 +200,7 @@ void IngamePlayerController::SetControlls (
     lastJoystickCoordinates_ = lastJoystickCoordinates;
 }
 
-bool IngamePlayerController::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
+bool PlayerController::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
 {
     if (team_ != attackerTeam && !IsBlockingNow () && lives_ >= 0)
     {
@@ -215,17 +215,17 @@ bool IngamePlayerController::OnAtttack (Urho3D::StringHash attackerTeam, float d
     }
 }
 
-float IngamePlayerController::GetCoins ()
+float PlayerController::GetCoins ()
 {
     return coins_;
 }
 
-void IngamePlayerController::SetCoins (float coins)
+void PlayerController::SetCoins (float coins)
 {
     coins_ = coins;
 }
 
-IngamePlayerController::~IngamePlayerController ()
+PlayerController::~PlayerController ()
 {
     Dispose ();
 }

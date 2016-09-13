@@ -22,10 +22,10 @@
 #include "InitIngameState.hpp"
 #include "IngameHud.hpp"
 
-#include <GameEngine/IngameCameraUpdater.hpp>
-#include <GameEngine/IngamePlayerController.hpp>
+#include <GameEngine/CameraUpdater.hpp>
+#include <GameEngine/PlayerController.hpp>
 #include <GameEngine/Constants.hpp>
-#include <GameEngine/IngameEventsHandler.hpp>
+#include <GameEngine/EventsHandler.hpp>
 #include <GameEngine/WarriorAi.hpp>
 #include <GameEngine/Utils.hpp>
 
@@ -80,8 +80,8 @@ bool IngameStateFunctions::ParseObjectsLayer (
             player->SetName ("player");
             player->SetPosition (Urho3D::Vector3 (object->GetPosition ()));
 
-            Urho3D::SharedPtr <GameEngine::IngamePlayerController> playerController =
-                    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::IngamePlayerController> ();
+            Urho3D::SharedPtr <GameEngine::PlayerController> playerController =
+                    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::PlayerController> ();
             playerController->SetNode (player);
             playerController->SetTeam (GameEngine::Constants::PlayerTeamId);
             if (Urho3D::GetPlatform () != "Android" && Urho3D::GetPlatform () != "iOS")
@@ -134,10 +134,10 @@ void IngameStateFunctions::InitIngameState (Urho3D::Context *context, Urho3D::St
 {
     GameEngine::RegisterType <StatesEngine::SceneContainer> (context);
     GameEngine::RegisterType <IngameHud> (context);
-    GameEngine::RegisterType <GameEngine::IngameCameraUpdater> (context);
-    GameEngine::RegisterType <GameEngine::IngameEventsHandler> (context);
+    GameEngine::RegisterType <GameEngine::CameraUpdater> (context);
+    GameEngine::RegisterType <GameEngine::EventsHandler> (context);
     GameEngine::RegisterType <GameEngine::WarriorAi> (context);
-    GameEngine::RegisterType <GameEngine::IngamePlayerController> (context);
+    GameEngine::RegisterType <GameEngine::PlayerController> (context);
 
     StatesEngine::StatesEngineSubsystem *statesEngine = context->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->DisposeAll ("any");
@@ -170,8 +170,8 @@ void IngameStateFunctions::InitIngameState (Urho3D::Context *context, Urho3D::St
     audio->SetListener (cameraNode->GetComponent <Urho3D::SoundListener> ());
 
     ParseTileMap (context, tileMapNode);
-    Urho3D::SharedPtr <GameEngine::IngameCameraUpdater> cameraUpdater =
-            statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::IngameCameraUpdater> ();
+    Urho3D::SharedPtr <GameEngine::CameraUpdater> cameraUpdater =
+            statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::CameraUpdater> ();
     cameraUpdater->SetCameraNode (cameraNode);
     cameraUpdater->SetPlayerNode ("/tileMap/objects/player/");
     cameraUpdater->SetTileMapNode (tileMapNode);
@@ -183,6 +183,6 @@ void IngameStateFunctions::InitIngameState (Urho3D::Context *context, Urho3D::St
         ingameHud->SetIsShowTouchControls (false);
     else
         ingameHud->SetIsShowTouchControls (true);
-    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::IngameEventsHandler> ();
+    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::EventsHandler> ();
 }
 }

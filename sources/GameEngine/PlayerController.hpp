@@ -7,9 +7,9 @@
 
 namespace GameEngine
 {
-class IngamePlayerController : public UnitBasis
+class PlayerController : public UnitBasis
 {
-URHO3D_OBJECT (IngamePlayerController, UnitBasis)
+URHO3D_OBJECT (PlayerController, UnitBasis)
 protected:
     float coins_;
     bool isAttackPressed_;
@@ -20,7 +20,7 @@ protected:
     void KeyboardToJoystickCoordinates ();
     void UpdateAnimation ();
 public:
-    IngamePlayerController (Urho3D::Context *context);
+    PlayerController (Urho3D::Context *context);
     virtual bool Init ();
     virtual bool Update (float timeStep);
     virtual bool Dispose ();
@@ -36,6 +36,6 @@ public:
 
     float GetCoins ();
     void SetCoins (float coins);
-    virtual ~IngamePlayerController ();
+    virtual ~PlayerController ();
 };
 }

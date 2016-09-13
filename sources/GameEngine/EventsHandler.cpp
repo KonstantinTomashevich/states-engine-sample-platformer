@@ -1,4 +1,4 @@
-#include "IngameEventsHandler.hpp"
+#include "EventsHandler.hpp"
 #include "Constants.hpp"
 #include "UnitInterface.hpp"
 
@@ -9,30 +9,30 @@
 
 namespace GameEngine
 {
-void IngameEventsHandler::PickupCoin (Urho3D::Node *coin)
+void EventsHandler::PickupCoin (Urho3D::Node *coin)
 {
     float cash = coin->GetVar (Constants::CoinCashVarHash).GetFloat ();
     playerController_->SetCoins (playerController_->GetCoins () + cash);
     coin->Remove ();
 }
 
-IngameEventsHandler::IngameEventsHandler (Urho3D::Context *context) : StateObject (context), playerController_ ()
+EventsHandler::EventsHandler (Urho3D::Context *context) : StateObject (context), playerController_ ()
 {
     isSubscribed_ = false;
 }
 
-bool IngameEventsHandler::Init ()
+bool EventsHandler::Init ()
 {
     StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     if (!playerController_)
-        playerController_ = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <IngamePlayerController> ();
+        playerController_ = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Get <PlayerController> ();
 
     if (playerController_)
     {
         SubscribeToEvent (Urho3D::E_PHYSICSBEGINCONTACT2D,
-                          URHO3D_HANDLER (IngameEventsHandler, OnPhysicsCollision));
+                          URHO3D_HANDLER (EventsHandler, OnPhysicsCollision));
         SubscribeToEvent (Constants::E_ATTACK_IN_AREA,
-                                  URHO3D_HANDLER (IngameEventsHandler, OnAttackInArea));
+                                  URHO3D_HANDLER (EventsHandler, OnAttackInArea));
         isSubscribed_ = true;
         ready_ = true;
         return true;
@@ -44,12 +44,12 @@ bool IngameEventsHandler::Init ()
     }
 }
 
-bool IngameEventsHandler::Update (float timeStep)
+bool EventsHandler::Update (float timeStep)
 {
 
 }
 
-bool IngameEventsHandler::Dispose ()
+bool EventsHandler::Dispose ()
 {
     UnsubscribeFromAllEvents ();
     ready_ = false;
@@ -57,17 +57,17 @@ bool IngameEventsHandler::Dispose ()
     return true;
 }
 
-Urho3D::SharedPtr<IngamePlayerController> IngameEventsHandler::GetPlayerController ()
+Urho3D::SharedPtr<PlayerController> EventsHandler::GetPlayerController ()
 {
     return playerController_;
 }
 
-void IngameEventsHandler::SetPlayerController (Urho3D::SharedPtr <IngamePlayerController> playerController)
+void EventsHandler::SetPlayerController (Urho3D::SharedPtr <PlayerController> playerController)
 {
     playerController_ = playerController;
 }
 
-void IngameEventsHandler::OnPhysicsCollision (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void EventsHandler::OnPhysicsCollision (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     Urho3D::Node *nodeA = (Urho3D::Node *)
             eventData [Urho3D::PhysicsBeginContact2D::P_NODEA].GetPtr ();
@@ -83,7 +83,7 @@ void IngameEventsHandler::OnPhysicsCollision (Urho3D::StringHash eventType, Urho
         PickupCoin (nodeA);
 }
 
-void IngameEventsHandler::OnAttackInArea (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void EventsHandler::OnAttackInArea (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     Urho3D::Rect rect = Urho3D::Rect (
                 eventData [Constants::AttackInArea::P_AREA_RECT].GetVector4 ());
@@ -112,7 +112,7 @@ void IngameEventsHandler::OnAttackInArea (Urho3D::StringHash eventType, Urho3D::
         }
 }
 
-IngameEventsHandler::~IngameEventsHandler ()
+EventsHandler::~EventsHandler ()
 {
 
 }

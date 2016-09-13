@@ -7,15 +7,15 @@
 
 namespace GameEngine
 {
-class IngameCameraUpdater : public StatesEngine::StateObject
+class CameraUpdater : public StatesEngine::StateObject
 {
-URHO3D_OBJECT (IngameCameraUpdater, StatesEngine::StateObject)
+URHO3D_OBJECT (CameraUpdater, StatesEngine::StateObject)
 protected:
     Urho3D::Node *cameraNode_;
     Urho3D::Node *playerNode_;
     Urho3D::Node *tileMapNode_;
 public:
-    IngameCameraUpdater (Urho3D::Context *context);
+    CameraUpdater (Urho3D::Context *context);
     virtual bool Init ();
     virtual bool Update (float timeStep);
     virtual bool Dispose ();
@@ -31,6 +31,6 @@ public:
     Urho3D::Node *GetTileMapNode ();
     void SetTileMapNode (Urho3D::Node *tileMapNode);
     void SetTileMapNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene = 0);
-    virtual ~IngameCameraUpdater ();
+    virtual ~CameraUpdater ();
 };
 }

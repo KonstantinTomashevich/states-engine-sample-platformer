@@ -1,4 +1,4 @@
-#include "IngameCameraUpdater.hpp"
+#include "CameraUpdater.hpp"
 #include <StatesEngine/StatesEngine.hpp>
 #include <Urho3D/Urho2D/TileMap2D.h>
 #include <Urho3D/Urho2D/TmxFile2D.h>
@@ -8,14 +8,14 @@
 
 namespace GameEngine
 {
-IngameCameraUpdater::IngameCameraUpdater (Urho3D::Context *context) : StateObject (context)
+CameraUpdater::CameraUpdater (Urho3D::Context *context) : StateObject (context)
 {
     cameraNode_ = 0;
     playerNode_ = 0;
     tileMapNode_ = 0;
 }
 
-bool IngameCameraUpdater::Init ()
+bool CameraUpdater::Init ()
 {
     if (cameraNode_ && playerNode_ && tileMapNode_)
     {
@@ -29,7 +29,7 @@ bool IngameCameraUpdater::Init ()
     }
 }
 
-bool IngameCameraUpdater::Update (float timeStep)
+bool CameraUpdater::Update (float timeStep)
 {
     Urho3D::Camera *camera = cameraNode_->GetComponent <Urho3D::Camera> ();
     Urho3D::TileMap2D *tileMap = tileMapNode_->GetComponent <Urho3D::TileMap2D> ();
@@ -56,58 +56,58 @@ bool IngameCameraUpdater::Update (float timeStep)
     cameraNode_->SetPosition (newCameraPosition);
 }
 
-bool IngameCameraUpdater::Dispose ()
+bool CameraUpdater::Dispose ()
 {
     ready_ = false;
     return true;
 }
 
-Urho3D::Node *IngameCameraUpdater::GetCameraNode ()
+Urho3D::Node *CameraUpdater::GetCameraNode ()
 {
     return cameraNode_;
 }
 
-void IngameCameraUpdater::SetCameraNode (Urho3D::Node *cameraNode)
+void CameraUpdater::SetCameraNode (Urho3D::Node *cameraNode)
 {
     cameraNode_ = cameraNode;
 }
 
-void IngameCameraUpdater::SetCameraNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
+void CameraUpdater::SetCameraNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
 {
     SetCameraNode (FindNode (context_, wayToNode, scene));
 }
 
-Urho3D::Node *IngameCameraUpdater::GetPlayerNode ()
+Urho3D::Node *CameraUpdater::GetPlayerNode ()
 {
     return playerNode_;
 }
 
-void IngameCameraUpdater::SetPlayerNode (Urho3D::Node *playerNode)
+void CameraUpdater::SetPlayerNode (Urho3D::Node *playerNode)
 {
     playerNode_ = playerNode;
 }
 
-void IngameCameraUpdater::SetPlayerNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
+void CameraUpdater::SetPlayerNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
 {
     SetPlayerNode (FindNode (context_, wayToNode, scene));
 }
 
-Urho3D::Node *IngameCameraUpdater::GetTileMapNode()
+Urho3D::Node *CameraUpdater::GetTileMapNode()
 {
     return tileMapNode_;
 }
 
-void IngameCameraUpdater::SetTileMapNode (Urho3D::Node *tileMapNode)
+void CameraUpdater::SetTileMapNode (Urho3D::Node *tileMapNode)
 {
     tileMapNode_ = tileMapNode;
 }
 
-void IngameCameraUpdater::SetTileMapNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
+void CameraUpdater::SetTileMapNode (Urho3D::String wayToNode, StatesEngine::SceneContainer *scene)
 {
     SetTileMapNode (FindNode (context_, wayToNode, scene));
 }
 
-IngameCameraUpdater::~IngameCameraUpdater ()
+CameraUpdater::~CameraUpdater ()
 {
     Dispose ();
 }
