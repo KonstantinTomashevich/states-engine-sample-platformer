@@ -83,7 +83,7 @@ bool IngameStateFunctions::ParseObjectsLayer (
             Urho3D::SharedPtr <GameEngine::IngamePlayerController> playerController =
                     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::IngamePlayerController> ();
             playerController->SetNode (player);
-            playerController->SetTeam (Constants::PLAYER_TEAM_ID);
+            playerController->SetTeam (GameEngine::Constants::PlayerTeamId);
             if (Urho3D::GetPlatform () != "Android" && Urho3D::GetPlatform () != "iOS")
                 playerController->SetIsUseKeyboardInsteadOfJoystick (true);
             playerController->Init ();
@@ -99,7 +99,7 @@ bool IngameStateFunctions::ParseObjectsLayer (
             Urho3D::SharedPtr <GameEngine::WarriorAi> warriorAi = statesEngine->
                     GetState <StatesEngine::StateObjectsManager> ()->Create <GameEngine::WarriorAi> ();
             warriorAi->SetNode (orc);
-            warriorAi->SetTeam (Constants::ORCS_TEAM_ID);
+            warriorAi->SetTeam (GameEngine::Constants::OrcsTeamId);
             warriorAi->SetTileMapNode (layer->GetTileMap ()->GetNode ());
             warriorAi->Init ();
         }
@@ -118,9 +118,8 @@ bool IngameStateFunctions::ParseWallsLayer (Urho3D::Context *context, Urho3D::Ti
                 if (GameEngine::CountOfEmptyTilesAround (x, y, layer) > 0)
                 {
                     node->CreateComponent <Urho3D::RigidBody2D> ();
-                    node->SetVar (
-                                Constants::OBJECT_TYPE_VAR_HASH,
-                                Urho3D::Variant (Constants::OBJECT_TYPE_WALL));
+                    node->SetVar (GameEngine::Constants::ObjectTypeVarHash,
+                                  Urho3D::Variant (GameEngine::Constants::ObjectTypes::Wall));
                     Urho3D::CollisionBox2D *box = node->CreateComponent <Urho3D::CollisionBox2D> ();
                     box->SetCenter (0.6f, 0.6f);
                     box->SetSize (1.28f, 1.28f);

@@ -45,7 +45,7 @@ void IngamePlayerController::UpdateAnimation ()
 
     if (lives_ >= 0.0f)
     {
-        if (timeFromLastDamage_ >= Constants::DAMAGE_ANIMATION_TIME)
+        if (timeFromLastDamage_ >= Constants::DamageAnimationTime)
         {
             float distanceToGround = DistanceToGround ();
             if (isBlockingNow_)
@@ -119,7 +119,7 @@ bool IngamePlayerController::Update (float timeStep)
 {
     if (timeFromDie_ <= 0.0f)
     {
-        if (timeFromLastDamage_ < Constants::DAMAGE_ANIMATION_TIME)
+        if (timeFromLastDamage_ < Constants::DamageAnimationTime)
             timeFromLastDamage_ += timeStep;
 
         if (useKeyboardInsteadOfJoystick_)

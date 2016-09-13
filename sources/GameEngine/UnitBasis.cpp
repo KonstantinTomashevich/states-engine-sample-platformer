@@ -29,8 +29,7 @@ float UnitBasis::DistanceToGround ()
         {
             Urho3D::PhysicsRaycastResult2D &result = results.At (index);
             Urho3D::Node *node = result.body_->GetNode ();
-            if (node->GetVar (Constants::OBJECT_TYPE_VAR_HASH).GetString () ==
-                    Constants::OBJECT_TYPE_WALL &&
+            if (node->GetVar (Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Wall &&
                     distanceToGround > result.distance_)
                 distanceToGround = result.distance_;
         }
@@ -74,14 +73,13 @@ void UnitBasis::UpdateAttack (float timeStep)
     Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
     if (sprite->GetAnimation () == "attack")
         timeFromAttackStart_ += timeStep;
-    if (timeFromAttackStart_ >= Constants::PLAYER_ATTACK_ANIMATION_TIME)
+    if (timeFromAttackStart_ >= Constants::PlayerAttackAnimationTime)
     {
         timeFromAttackStart_ = 0.0f;
         isAttackExecuted_ = false;
     }
 
-    if (timeFromAttackStart_ > Constants::PLAYER_ATTACK_TIME_IN_ANIMATION &&
-            !isAttackExecuted_)
+    if (timeFromAttackStart_ > Constants::PlayerSendAttackDelayAfterStartOfAttackAnimation && !isAttackExecuted_)
     {
         Urho3D::VariantMap eventData;
         Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
@@ -97,10 +95,10 @@ void UnitBasis::UpdateAttack (float timeStep)
             rect = Urho3D::Rect (playerPosition2D - Urho3D::Vector2::RIGHT * 2.0 + Urho3D::Vector2::DOWN * 0.5f,
                                  playerPosition2D + Urho3D::Vector2::UP * 2.5f);
 
-        eventData [Constants::AttackInAreaData::AREA_RECT] = rect.ToVector4 ();
-        eventData [Constants::AttackInAreaData::ATTACKER_TEAM_ID] = team_;
-        eventData [Constants::AttackInAreaData::DAMAGE] = attackDamage_;
-        this->SendEvent (Constants::EVENT_ATTACK_IN_AREA, eventData);
+        eventData [Constants::AttackInArea::P_AREA_RECT] = rect.ToVector4 ();
+        eventData [Constants::AttackInArea::P_ATTACKER_TEAM_ID] = team_;
+        eventData [Constants::AttackInArea::P_DAMAGE] = attackDamage_;
+        this->SendEvent (Constants::E_ATTACK_IN_AREA, eventData);
         isAttackExecuted_ = true;
     }
 }

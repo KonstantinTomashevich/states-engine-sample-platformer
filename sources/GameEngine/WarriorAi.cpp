@@ -26,7 +26,7 @@ void WarriorAi::UpdateAnimation ()
 
     if (lives_ >= 0.0f)
     {
-        if (timeFromLastDamage_ >= Constants::DAMAGE_ANIMATION_TIME)
+        if (timeFromLastDamage_ >= Constants::DamageAnimationTime)
         {
             if (isBlockingNow_)
             {
@@ -174,7 +174,7 @@ WarriorAi::WarriorAi (Urho3D::Context *context) : UnitBasis (context)
     attackDamage_ = 15.0f;
     newDecinisionTime_ = 3.0f;
     timeFromLastDecinision_ = 999.0f;
-    team_ = Constants::ORCS_TEAM_ID;
+    team_ = Constants::OrcsTeamId;
     tileMapNode_ = 0;
 }
 
@@ -196,7 +196,7 @@ bool WarriorAi::Update (float timeStep)
 {
     if (timeFromDie_ <= 0.0f)
     {
-        if (timeFromLastDamage_ < Constants::DAMAGE_ANIMATION_TIME)
+        if (timeFromLastDamage_ < Constants::DamageAnimationTime)
             timeFromLastDamage_ += timeStep;
 
         UpdateAnimation ();

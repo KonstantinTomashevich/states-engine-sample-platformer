@@ -13,6 +13,11 @@
 
 namespace FrontendCXX
 {
+namespace Constants
+{
+const Urho3D::StringHash LevelNameVarHash ("levelName");
+}
+
 class MenuUi : public StatesEngine::StateObject
 {
 URHO3D_OBJECT (MenuUi, StatesEngine::StateObject)

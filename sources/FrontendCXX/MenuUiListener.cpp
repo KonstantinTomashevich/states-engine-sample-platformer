@@ -38,7 +38,7 @@ MenuUiListener::~MenuUiListener ()
 void MenuUiListener::LevelClicked (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     Urho3D::UIElement *button = (Urho3D::UIElement *) eventData [Urho3D::Click::P_ELEMENT].GetPtr ();
-    Urho3D::String levelName = button->GetVar (Constants::LEVEL_NAME_VAR_HASH).GetString ();
+    Urho3D::String levelName = button->GetVar (Constants::LevelNameVarHash).GetString ();
     IngameStateFunctions::InitIngameState (context_,
                                            Urho3D::String ("Levels/") + levelName + Urho3D::String (".tmx"));
 }

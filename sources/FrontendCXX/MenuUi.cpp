@@ -21,7 +21,7 @@ void MenuUi::InitUI ()
 
     level1Button_ = ui->GetRoot ()->CreateChild <Urho3D::Button> ("level1Button");
     level1Button_->SetTexture (cache->GetResource <Urho3D::Texture2D> ("Textures/ui/button_background.png"));
-    level1Button_->SetVar (Constants::LEVEL_NAME_VAR_HASH, Urho3D::String ("level1"));
+    level1Button_->SetVar (Constants::LevelNameVarHash, Urho3D::String ("level1"));
     level1ButtonText_ = level1Button_->CreateChild <Urho3D::Text> ("text");
 
     level1ButtonText_->SetText ("Level 1");
@@ -33,7 +33,7 @@ void MenuUi::InitUI ()
 
     level2Button_ = ui->GetRoot ()->CreateChild <Urho3D::Button> ("level2Button");
     level2Button_->SetTexture (cache->GetResource <Urho3D::Texture2D> ("Textures/ui/button_background.png"));
-    level2Button_->SetVar (Constants::LEVEL_NAME_VAR_HASH, Urho3D::String ("level2"));
+    level2Button_->SetVar (Constants::LevelNameVarHash, Urho3D::String ("level2"));
     level2ButtonText_ = level2Button_->CreateChild <Urho3D::Text> ("text");
 
     level2ButtonText_->SetText ("Level 2");
@@ -45,7 +45,7 @@ void MenuUi::InitUI ()
 
     level3Button_ = ui->GetRoot ()->CreateChild <Urho3D::Button> ("level3Button");
     level3Button_->SetTexture (cache->GetResource <Urho3D::Texture2D> ("Textures/ui/button_background.png"));
-    level3Button_->SetVar (Constants::LEVEL_NAME_VAR_HASH, Urho3D::String ("level3"));
+    level3Button_->SetVar (Constants::LevelNameVarHash, Urho3D::String ("level3"));
     level3ButtonText_ = level3Button_->CreateChild <Urho3D::Text> ("text");
 
     level3ButtonText_->SetText ("Level 3");
@@ -57,7 +57,6 @@ void MenuUi::InitUI ()
 
     exitButton_ = ui->GetRoot ()->CreateChild <Urho3D::Button> ("exitButton");
     exitButton_->SetTexture (cache->GetResource <Urho3D::Texture2D> ("Textures/ui/button_background.png"));
-    exitButton_->SetVar (Constants::LEVEL_NAME_VAR_HASH, Urho3D::String ("exit"));
     exitButtonText_ = exitButton_->CreateChild <Urho3D::Text> ("text");
 
     exitButtonText_->SetText ("Exit");

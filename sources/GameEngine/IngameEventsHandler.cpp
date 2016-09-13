@@ -11,7 +11,7 @@ namespace GameEngine
 {
 void IngameEventsHandler::PickupCoin (Urho3D::Node *coin)
 {
-    float cash = coin->GetVar (Constants::COIN_CASH_VAR_HASH).GetFloat ();
+    float cash = coin->GetVar (Constants::CoinCashVarHash).GetFloat ();
     playerController_->SetCoins (playerController_->GetCoins () + cash);
     coin->Remove ();
 }
@@ -31,7 +31,7 @@ bool IngameEventsHandler::Init ()
     {
         SubscribeToEvent (Urho3D::E_PHYSICSBEGINCONTACT2D,
                           URHO3D_HANDLER (IngameEventsHandler, OnPhysicsCollision));
-        SubscribeToEvent (Constants::EVENT_ATTACK_IN_AREA,
+        SubscribeToEvent (Constants::E_ATTACK_IN_AREA,
                                   URHO3D_HANDLER (IngameEventsHandler, OnAttackInArea));
         isSubscribed_ = true;
         ready_ = true;
@@ -75,21 +75,21 @@ void IngameEventsHandler::OnPhysicsCollision (Urho3D::StringHash eventType, Urho
             eventData [Urho3D::PhysicsBeginContact2D::P_NODEB].GetPtr ();
 
     if (nodeA == playerController_->GetNode ()&& nodeB->GetVar (
-                Constants::OBJECT_TYPE_VAR_HASH).GetString () == Constants::OBJECT_TYPE_COIN)
+                Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Coin)
         PickupCoin (nodeB);
 
     if (nodeB == playerController_->GetNode ()&& nodeA->GetVar (
-                Constants::OBJECT_TYPE_VAR_HASH).GetString () == Constants::OBJECT_TYPE_COIN)
+                Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Coin)
         PickupCoin (nodeA);
 }
 
 void IngameEventsHandler::OnAttackInArea (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     Urho3D::Rect rect = Urho3D::Rect (
-                eventData [Constants::AttackInAreaData::AREA_RECT].GetVector4 ());
+                eventData [Constants::AttackInArea::P_AREA_RECT].GetVector4 ());
     Urho3D::StringHash teamId = eventData [
-            Constants::AttackInAreaData::ATTACKER_TEAM_ID].GetStringHash ();
-    float damage = eventData [Constants::AttackInAreaData::DAMAGE].GetFloat ();
+            Constants::AttackInArea::P_ATTACKER_TEAM_ID].GetStringHash ();
+    float damage = eventData [Constants::AttackInArea::P_DAMAGE].GetFloat ();
 
     StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > units = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
