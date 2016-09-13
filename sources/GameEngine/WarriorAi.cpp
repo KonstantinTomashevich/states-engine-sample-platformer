@@ -146,7 +146,7 @@ void WarriorAi::UpdateAi (UnitInterface *enemy, float timeStep)
         if (timeFromLastDecinision_ > newDecinisionTime_)
         {
             timeFromLastDecinision_ = 0.0f;
-            if (Urho3D::Random () >= 0.5f)
+            if (Urho3D::Random () >= 0.5f || blockEfficiency_ <= 0.2f)
                 SetToAttack ();
             else
                 SetToBlock ();

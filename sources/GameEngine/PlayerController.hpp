@@ -32,7 +32,7 @@ public:
     bool IsAttackPressed ();
     bool IsBlockPressed ();
     void SetControlls (bool isAttackPressed, bool isBlockPressed, Urho3D::Vector2 lastJoystickCoordinates);
-    virtual bool OnAtttack (Urho3D::StringHash attackerTeam, float damage);
+    virtual bool OnAttack (Urho3D::StringHash attackerTeam, float damage);
 
     float GetCoins ();
     void SetCoins (float coins);

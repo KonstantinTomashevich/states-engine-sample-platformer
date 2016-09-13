@@ -13,7 +13,7 @@ public:
     virtual Urho3D::Vector3 GetPosition () = 0;
     virtual bool IsAttackingNow () = 0;
     virtual bool IsBlockingNow () = 0;
-    virtual bool OnAtttack (Urho3D::StringHash attackerTeam, float damage) = 0;
+    virtual bool OnAttack (Urho3D::StringHash attackerTeam, float damage) = 0;
     virtual Urho3D::StringHash GetTeam () = 0;
     virtual Urho3D::Rect GetLocalRect () = 0;
     virtual float GetLives () = 0;

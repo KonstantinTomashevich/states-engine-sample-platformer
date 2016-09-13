@@ -185,35 +185,21 @@ void PlayerController::SetControlls (bool isAttackPressed, bool isBlockPressed, 
     lastJoystickCoordinates_ = lastJoystickCoordinates;
 }
 
-bool PlayerController::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
+bool PlayerController::OnAttack (Urho3D::StringHash attackerTeam, float damage)
 {
-    if (team_ != attackerTeam && lives_ >= 0)
+    if (UnitBasis::ProcessOnAttack (attackerTeam, damage))
     {
-        if (isBlockingNow_)
-        {
-            lives_ -= damage *(1 - blockEfficiency_);
-            blockEfficiency_ -= 0.2f;
-        }
+        Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
+        sprite->SetSpeed (1.0f);
+        if (Urho3D::Random () >= 0.5f)
+            sprite->SetAnimation ("damaged0");
         else
-            lives_ -= damage;
-
-        if (blockEfficiency_ <= 0.0f)
-            isBlockingNow_ = false;
-
-        if (!isBlockingNow_)
-        {
-            Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
-            if (sprite && lives_ > 0.0f)
-            {
-                sprite->SetSpeed (1.0f);
-                if (Urho3D::Random () >= 0.5f)
-                    sprite->SetAnimation ("damaged0");
-                else
-                    sprite->SetAnimation ("damaged1");
-                timeFromLastDamage_ = 0.0f;
-            }
-        }
+            sprite->SetAnimation ("damaged1");
+        timeFromLastDamage_ = 0.0f;
+        return true;
     }
+    else
+        return false;
 }
 
 float PlayerController::GetCoins ()

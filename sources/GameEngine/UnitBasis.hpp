@@ -48,7 +48,10 @@ public:
     virtual Urho3D::Vector3 GetPosition ();
     virtual bool IsAttackingNow ();
     virtual bool IsBlockingNow ();
-    virtual bool OnAtttack (Urho3D::StringHash attackerTeam, float damage);
+
+    /// Returns true if damage animation will be player.
+    bool ProcessOnAttack (Urho3D::StringHash attackerTeam, float damage);
+    virtual bool OnAttack (Urho3D::StringHash attackerTeam, float damage);
     virtual Urho3D::StringHash GetTeam ();
     void SetTeam (Urho3D::StringHash team);
     virtual Urho3D::Rect GetLocalRect ();

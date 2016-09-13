@@ -111,7 +111,7 @@ void EventsHandler::OnAttackInArea (Urho3D::StringHash eventType, Urho3D::Varian
                     (unitRect.min_.y_ >= rect.min_.y_ && unitRect.min_.y_ <= rect.max_.y_)) ||
                     ((unitRect.max_.x_ >= rect.min_.x_ && unitRect.max_.x_ <= rect.max_.x_) &&
                     (unitRect.max_.y_ >= rect.min_.y_ && unitRect.max_.y_ <= rect.max_.y_)))
-                unitInterface->OnAtttack (teamId, damage);
+                unitInterface->OnAttack (teamId, damage);
         }
 }
 

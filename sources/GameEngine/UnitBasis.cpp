@@ -196,7 +196,21 @@ bool UnitBasis::IsBlockingNow ()
     return isBlockingNow_;
 }
 
-bool UnitBasis::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
+bool UnitBasis::OnAttack (Urho3D::StringHash attackerTeam, float damage)
+{
+    if (ProcessOnAttack (attackerTeam, damage))
+    {
+        Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
+        sprite->SetSpeed (1.0f);
+        sprite->SetAnimation ("damage");
+        timeFromLastDamage_ = 0.0f;
+        return true;
+    }
+    else
+        return false;
+}
+
+bool UnitBasis::ProcessOnAttack (Urho3D::StringHash attackerTeam, float damage)
 {
     if (team_ != attackerTeam && lives_ >= 0)
     {
@@ -211,17 +225,10 @@ bool UnitBasis::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
         if (blockEfficiency_ <= 0.0f)
             isBlockingNow_ = false;
 
-        if (!isBlockingNow_)
-        {
-            Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
-            if (sprite && lives_ > 0.0f)
-            {
-                sprite->SetSpeed (1.0f);
-                sprite->SetAnimation ("damage");
-                timeFromLastDamage_ = 0.0f;
-            }
-        }
+        if (!isBlockingNow_ && lives_ > 0.0f)
+                return true;
     }
+    return false;
 }
 
 Urho3D::StringHash UnitBasis::GetTeam ()
