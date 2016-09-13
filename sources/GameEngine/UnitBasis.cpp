@@ -29,8 +29,16 @@ float UnitBasis::DistanceToGround ()
         {
             Urho3D::PhysicsRaycastResult2D &result = results.At (index);
             Urho3D::Node *node = result.body_->GetNode ();
-            if (node->GetVar (Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Wall &&
+            if ((node->GetVar (Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Wall ||
+
+                 (node->GetVar (Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Enemy &&
+                  node_->GetVar (Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Player) ||
+
+                 (node->GetVar (Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Player &&
+                  node_->GetVar (Constants::ObjectTypeVarHash).GetString () == Constants::ObjectTypes::Enemy)) &&
+
                     distanceToGround > result.distance_)
+
                 distanceToGround = result.distance_;
         }
     return distanceToGround;
