@@ -1,0 +1,8 @@
+set (TARGET_NAME FrontendCXX)
+file (GLOB Headers "*.hpp")
+file (GLOB Implementations "*.cpp")
+set (SOURCE_FILES ${Headers} ${Implementations})
+define_dependency_libs (Urho3D)
+setup_library (STATIC)
+target_link_libraries (FrontendCXX StatesEngine)
+target_link_libraries (FrontendCXX GameEngine)
