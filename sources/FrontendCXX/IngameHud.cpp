@@ -171,18 +171,29 @@ void IngameHud::UpdateUI (float timeStep)
         blockButton_->SetVisible (pauseButton_->IsVisible ());
         joystick_->SetVisible (pauseButton_->IsVisible ());
 
-        //TODO: Maybe it better to set x 1 or -1 if > 0.2f or < -0.2f, and same for y. With it will be easier to play on phones.
-        Urho3D::Vector2 joystickCoordinates_;
-        joystickCoordinates_.x_ = ((joystickKnob_->GetPosition ().x_ +
+        Urho3D::Vector2 joystickCoordinates;
+        joystickCoordinates.x_ = ((joystickKnob_->GetPosition ().x_ +
                 joystickKnob_->GetWidth () / 2.0f) - joystick_->GetWidth () / 2.0f) *
                 2.0f / joystick_->GetWidth ();
 
-        joystickCoordinates_.y_ = ((joystickKnob_->GetPosition ().y_ +
+        joystickCoordinates.y_ = -((joystickKnob_->GetPosition ().y_ +
                 joystickKnob_->GetHeight () / 2.0f) - joystick_->GetHeight () / 2.0f) *
                 2.0f / joystick_->GetHeight ();
 
+        if (joystickCoordinates.x_ > 0.25f)
+            joystickCoordinates.x_ = 1.0f;
+        else if (joystickCoordinates.x_ < -0.25f)
+            joystickCoordinates.x_ = -1.0f;
+        else
+            joystickCoordinates.x_ = 0.f;
+
+        if (joystickCoordinates.y_ > 0.25f)
+            joystickCoordinates.y_ = 1.0f;
+        else
+            joystickCoordinates.y_ = 0.0f;
+
         playerController_->SetControlls (attackButton_->IsPressed (),
-                                         blockButton_->IsPressed (), joystickCoordinates_);
+                                         blockButton_->IsPressed (), joystickCoordinates);
     }
     else
     {

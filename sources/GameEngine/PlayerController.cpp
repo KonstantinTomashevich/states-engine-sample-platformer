@@ -137,7 +137,7 @@ bool PlayerController::Update (float timeStep)
                     Urho3D::Vector2 (maxSpeed_ * lastJoystickCoordinates_.x_,
                                      body->GetLinearVelocity ().y_));
 
-        if (lastJoystickCoordinates_.y_ > 0.1f)
+        if (lastJoystickCoordinates_.y_ > 0.25f)
             Jump ();
 
         UpdateAnimation ();
