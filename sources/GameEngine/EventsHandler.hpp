@@ -23,6 +23,7 @@ public:
 
     Urho3D::SharedPtr <PlayerController> GetPlayerController ();
     void SetPlayerController (Urho3D::SharedPtr <PlayerController> playerController);
+
     void OnPhysicsCollision (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void OnAttackInArea (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     virtual ~EventsHandler ();

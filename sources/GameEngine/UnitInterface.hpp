@@ -17,6 +17,8 @@ public:
     virtual Urho3D::StringHash GetTeam () = 0;
     virtual Urho3D::Rect GetLocalRect () = 0;
     virtual float GetLives () = 0;
+    virtual float GetMaxLives () = 0;
+    virtual float GetLivesRegeneration () = 0;
     virtual ~UnitInterface ();
 };
 }

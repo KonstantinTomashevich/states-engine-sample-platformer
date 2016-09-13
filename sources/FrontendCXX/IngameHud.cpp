@@ -162,6 +162,7 @@ void IngameHud::UpdateUI (float timeStep)
         SetPauseWindowVisible (true);
         resumeButton_->SetVisible (false);
         levelFailedText_->SetVisible (true);
+        playerController_->GetNode ()->GetScene ()->SetUpdateEnabled (false);
     }
 
     if (showTouchControls_)
@@ -170,6 +171,7 @@ void IngameHud::UpdateUI (float timeStep)
         blockButton_->SetVisible (pauseButton_->IsVisible ());
         joystick_->SetVisible (pauseButton_->IsVisible ());
 
+        //TODO: Maybe it better to set x 1 or -1 if > 0.2f or < -0.2f, and same for y. With it will be easier to play on phones.
         Urho3D::Vector2 joystickCoordinates_;
         joystickCoordinates_.x_ = ((joystickKnob_->GetPosition ().x_ +
                 joystickKnob_->GetWidth () / 2.0f) - joystick_->GetWidth () / 2.0f) *
@@ -178,6 +180,7 @@ void IngameHud::UpdateUI (float timeStep)
         joystickCoordinates_.y_ = ((joystickKnob_->GetPosition ().y_ +
                 joystickKnob_->GetHeight () / 2.0f) - joystick_->GetHeight () / 2.0f) *
                 2.0f / joystick_->GetHeight ();
+
         playerController_->SetControlls (attackButton_->IsPressed (),
                                          blockButton_->IsPressed (), joystickCoordinates_);
     }

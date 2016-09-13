@@ -38,6 +38,7 @@ float UnitBasis::DistanceToGround ()
 
 void UnitBasis::Jump ()
 {
+    // TODO: It cause doble-jumps (and 3-jumps, and 4-jumps...) if FPS is good. Maybe add time from last jump counter?
     Urho3D::RigidBody2D *body = node_->GetComponent <Urho3D::RigidBody2D> ();
     if (DistanceToGround () < 0.1f)
         body->ApplyForceToCenter (Urho3D::Vector2::UP * jumpForce_, true);
@@ -73,18 +74,20 @@ void UnitBasis::UpdateAttack (float timeStep)
     Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
     if (sprite->GetAnimation () == "attack")
         timeFromAttackStart_ += timeStep;
-    if (timeFromAttackStart_ >= Constants::PlayerAttackAnimationTime)
+
+    if (timeFromAttackStart_ >= Constants::AttackAnimationTime)
     {
         timeFromAttackStart_ = 0.0f;
         isAttackExecuted_ = false;
     }
 
-    if (timeFromAttackStart_ > Constants::PlayerSendAttackDelayAfterStartOfAttackAnimation && !isAttackExecuted_)
+    if (timeFromAttackStart_ > Constants::SendAttackDelayAfterStartOfAttackAnimation && !isAttackExecuted_)
     {
         Urho3D::VariantMap eventData;
         Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
         Urho3D::Rect rect;
         Urho3D::Vector2 playerPosition2D;
+
         playerPosition2D.x_ = node_->GetPosition ().x_;
         playerPosition2D.y_ = node_->GetPosition ().y_;
 
@@ -98,6 +101,7 @@ void UnitBasis::UpdateAttack (float timeStep)
         eventData [Constants::AttackInArea::P_AREA_RECT] = rect.ToVector4 ();
         eventData [Constants::AttackInArea::P_ATTACKER_TEAM_ID] = team_;
         eventData [Constants::AttackInArea::P_DAMAGE] = attackDamage_;
+
         this->SendEvent (Constants::E_ATTACK_IN_AREA, eventData);
         isAttackExecuted_ = true;
     }
@@ -109,11 +113,16 @@ UnitBasis::UnitBasis (Urho3D::Context *context) : UnitInterface (context)
     jumpForce_ = 550.0f;
     maxSpeed_ = 4.0f;
     lives_ = 100.0f;
+    maxLives_ = 100.0f;
+
+    livesRegeneration_ = 3.0f;
     timeFromAttackStart_ = 0.0f;
     attackDamage_ = 10.0f;
+
     isBlockingNow_ = false;
     isAttackingNow_ = false;
     isAttackExecuted_ = false;
+
     timeFromLastDamage_ = 0.0f;
     timeFromDie_ = 0.0f;
     dieTime_ = 20.0f;
@@ -151,6 +160,7 @@ bool UnitBasis::IsBlockingNow ()
 
 bool UnitBasis::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
 {
+    // TODO: Now "block" can defend from all attacks. I think that it isn't good.
     if (team_ != attackerTeam && !IsBlockingNow () && lives_ >= 0)
     {
         lives_ -= damage;
@@ -227,6 +237,16 @@ void UnitBasis::SetJumpForce (float jumpForce)
 float UnitBasis::GetLives ()
 {
     return lives_;
+}
+
+float UnitBasis::GetMaxLives ()
+{
+    return maxLives_;
+}
+
+float UnitBasis::GetLivesRegeneration ()
+{
+    return livesRegeneration_;
 }
 
 UnitBasis::~UnitBasis ()

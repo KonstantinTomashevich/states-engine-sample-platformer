@@ -16,10 +16,15 @@ protected:
     float maxSpeed_;
     float jumpForce_;
     bool isBlockingNow_;
+
     bool isAttackingNow_;
     float lives_;
+    float maxLives_;
+
+    float livesRegeneration_;
     float timeFromAttackStart_;
     bool isAttackExecuted_;
+
     float attackDamage_;
     float timeFromLastDamage_;
     float timeFromDie_;
@@ -56,6 +61,8 @@ public:
     float GetJumpForce ();
     void SetJumpForce (float jumpForce);
     virtual float GetLives ();
+    virtual float GetMaxLives ();
+    virtual float GetLivesRegeneration ();
     virtual ~UnitBasis ();
 };
 }

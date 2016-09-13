@@ -31,8 +31,8 @@ const Urho3D::String Enemy ("enemy");
 const Urho3D::String Wall ("wall");
 }
 
-const float PlayerAttackAnimationTime = 0.45f;
+const float AttackAnimationTime = 0.45f;
 const float DamageAnimationTime = 0.2f;
-const float PlayerSendAttackDelayAfterStartOfAttackAnimation = 0.15f;
+const float SendAttackDelayAfterStartOfAttackAnimation = 0.15f;
 }
 }

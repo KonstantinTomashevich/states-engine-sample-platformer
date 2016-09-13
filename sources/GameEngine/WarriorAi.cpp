@@ -98,12 +98,12 @@ void WarriorAi::UpdateAi (UnitInterface *enemy, float timeStep)
     Urho3D::RigidBody2D *body = node_->GetComponent <Urho3D::RigidBody2D> ();
     Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
 
-    if ((enemy->GetPosition () - this->GetPosition ()).Length () > 2.0f)
+    if ((enemy->GetPosition () - this->GetPosition ()).Length () > 3.0f)
     {
         timeFromLastDecinision_ = 999.0f;
         SetToMoving ();
 
-        if (Urho3D::Abs (enemy->GetPosition ().x_ - this->GetPosition ().x_) > 2.0f)
+        if (Urho3D::Abs (enemy->GetPosition ().x_ - this->GetPosition ().x_) > 3.0f)
         {
             if (enemy->GetPosition ().x_ > this->GetPosition ().x_)
                 body->SetLinearVelocity (
@@ -206,8 +206,8 @@ bool WarriorAi::Update (float timeStep)
         UnitInterface *nearestEnemy = GetNearestEnemy ();
         if (nearestEnemy)
             UpdateAi (nearestEnemy, timeStep);
-        if (lives_ <= 100.0f)
-            lives_ += timeStep * 3.0f;
+        if (lives_ <= maxLives_)
+            lives_ += timeStep * livesRegeneration_;
     }
 
     if (lives_ <= 0.0f)

@@ -92,18 +92,21 @@ void EventsHandler::OnAttackInArea (Urho3D::StringHash eventType, Urho3D::Varian
     float damage = eventData [Constants::AttackInArea::P_DAMAGE].GetFloat ();
 
     StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
-    Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > units = statesEngine->GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
+    Urho3D::Vector <Urho3D::SharedPtr <UnitInterface> > units = statesEngine->
+            GetState <StatesEngine::StateObjectsManager> ()->GetAll <UnitInterface> ();
 
     if (!units.Empty ())
         for (int index = 0; index < units.Size (); index++)
         {
             Urho3D::SharedPtr <UnitInterface> unitInterface = units.At (index);
             Urho3D::Rect unitRect = unitInterface->GetLocalRect ();
+
             unitRect.min_ += Urho3D::Vector2 (unitInterface->GetPosition ().x_,
                                               unitInterface->GetPosition ().y_);
             unitRect.max_ += Urho3D::Vector2 (unitInterface->GetPosition ().x_,
                                               unitInterface->GetPosition ().y_);
-            // If intersects.
+
+            // Call OnAttack if intersects.
             if (((unitRect.min_.x_ >= rect.min_.x_ && unitRect.min_.x_ <= rect.max_.x_) &&
                     (unitRect.min_.y_ >= rect.min_.y_ && unitRect.min_.y_ <= rect.max_.y_)) ||
                     ((unitRect.max_.x_ >= rect.min_.x_ && unitRect.max_.x_ <= rect.max_.x_) &&
