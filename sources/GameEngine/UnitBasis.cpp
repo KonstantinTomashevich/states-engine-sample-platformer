@@ -46,10 +46,12 @@ float UnitBasis::DistanceToGround ()
 
 void UnitBasis::Jump ()
 {
-    // TODO: It cause doble-jumps (and 3-jumps, and 4-jumps...) if FPS is good. Maybe add time from last jump counter?
     Urho3D::RigidBody2D *body = node_->GetComponent <Urho3D::RigidBody2D> ();
-    if (DistanceToGround () < 0.1f)
+    if (DistanceToGround () < 0.1f && timeBeforeNewJump_ < 0.0f)
+    {
         body->ApplyForceToCenter (Urho3D::Vector2::UP * jumpForce_, true);
+        timeBeforeNewJump_ = 1.0f;
+    }
 }
 
 void UnitBasis::SetToBlock ()
@@ -118,7 +120,8 @@ void UnitBasis::UpdateAttack (float timeStep)
 UnitBasis::UnitBasis (Urho3D::Context *context) : UnitInterface (context)
 {
     node_ = 0;
-    jumpForce_ = 550.0f;
+    jumpForce_ = 1600.0f;
+    timeBeforeNewJump_ = -1.0f;
     maxSpeed_ = 4.0f;
     lives_ = 100.0f;
     maxLives_ = 100.0f;
@@ -143,7 +146,27 @@ bool UnitBasis::Init ()
 
 bool UnitBasis::Update (float timeStep)
 {
-    return false;
+    if (lives_ <= 0.0f)
+    {
+        timeFromDie_ += timeStep;
+        if (node_->GetComponent <Urho3D::RigidBody2D> ())
+            node_->GetComponent <Urho3D::RigidBody2D> ()->SetEnabled (false);
+
+        if (timeFromDie_ >= dieTime_)
+        {
+            node_->Remove ();
+            isWillBeDeleted_ = true;
+        }
+    }
+    else
+    {
+        if (lives_ <= maxLives_)
+            lives_ += timeStep * livesRegeneration_;
+        if (timeBeforeNewJump_ >= 0.0f)
+            timeBeforeNewJump_ -= timeStep;
+    }
+
+    return true;
 }
 
 bool UnitBasis::Dispose ()

@@ -143,22 +143,8 @@ bool PlayerController::Update (float timeStep)
         UpdateAnimation ();
         if (isAttackingNow_)
             UpdateAttack (timeStep);
-        if (lives_ <= maxLives_)
-            lives_ += timeStep * livesRegeneration_;
     }
-
-    if (lives_ <= 0.0f)
-    {
-        timeFromDie_ += timeStep;
-        if (node_->GetComponent <Urho3D::RigidBody2D> ())
-            node_->GetComponent <Urho3D::RigidBody2D> ()->SetEnabled (false);
-
-        if (timeFromDie_ >= dieTime_)
-        {
-            node_->Remove ();
-            isWillBeDeleted_ = true;
-        }
-    }
+    return true && UnitBasis::Update (timeStep);
 }
 
 bool PlayerController::Dispose ()
@@ -197,6 +183,21 @@ void PlayerController::SetControlls (bool isAttackPressed, bool isBlockPressed, 
     isAttackPressed_ = isAttackPressed;
     isBlockPressed_ = isBlockPressed;
     lastJoystickCoordinates_ = lastJoystickCoordinates;
+}
+
+bool PlayerController::OnAtttack (Urho3D::StringHash attackerTeam, float damage)
+{
+    if (team_ != attackerTeam && !IsBlockingNow () && lives_ >= 0)
+    {
+        lives_ -= damage;
+        Urho3D::AnimatedSprite2D *sprite = node_->GetComponent <Urho3D::AnimatedSprite2D> ();
+        sprite->SetSpeed (1.0f);
+        if (Urho3D::Random () >= 0.5f)
+            sprite->SetAnimation ("damaged0");
+        else
+            sprite->SetAnimation ("damaged1");
+        timeFromLastDamage_ = 0.0f;
+    }
 }
 
 float PlayerController::GetCoins ()

@@ -15,6 +15,7 @@ protected:
     Urho3D::StringHash team_;
     float maxSpeed_;
     float jumpForce_;
+    float timeBeforeNewJump_;
     bool isBlockingNow_;
 
     bool isAttackingNow_;

@@ -206,23 +206,8 @@ bool WarriorAi::Update (float timeStep)
         UnitInterface *nearestEnemy = GetNearestEnemy ();
         if (nearestEnemy)
             UpdateAi (nearestEnemy, timeStep);
-        if (lives_ <= maxLives_)
-            lives_ += timeStep * livesRegeneration_;
     }
-
-    if (lives_ <= 0.0f)
-    {
-        timeFromDie_ += timeStep;
-        if (node_->GetComponent <Urho3D::RigidBody2D> ())
-            node_->GetComponent <Urho3D::RigidBody2D> ()->SetEnabled (false);
-
-        if (timeFromDie_ >= dieTime_)
-        {
-            node_->Remove ();
-            isWillBeDeleted_ = true;
-        }
-    }
-    return true;
+    return true && UnitBasis::Update (timeStep);
 }
 
 bool WarriorAi::Dispose ()
