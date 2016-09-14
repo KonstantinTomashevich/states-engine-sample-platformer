@@ -57,12 +57,12 @@ bool EventsHandler::Dispose ()
     return true;
 }
 
-Urho3D::SharedPtr<PlayerController> EventsHandler::GetPlayerController ()
+PlayerController *EventsHandler::GetPlayerController ()
 {
     return playerController_;
 }
 
-void EventsHandler::SetPlayerController (Urho3D::SharedPtr <PlayerController> playerController)
+void EventsHandler::SetPlayerController (PlayerController *playerController)
 {
     playerController_ = playerController;
 }

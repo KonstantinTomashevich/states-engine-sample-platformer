@@ -12,7 +12,7 @@ class EventsHandler : public StatesEngine::StateObject
 URHO3D_OBJECT (EventsHandler, StatesEngine::StateObject)
 protected:
     bool isSubscribed_;
-    Urho3D::SharedPtr <PlayerController> playerController_;
+    PlayerController *playerController_;
 
     void PickupCoin (Urho3D::Node *coin);
 public:
@@ -21,8 +21,8 @@ public:
     virtual bool Update (float timeStep);
     virtual bool Dispose ();
 
-    Urho3D::SharedPtr <PlayerController> GetPlayerController ();
-    void SetPlayerController (Urho3D::SharedPtr <PlayerController> playerController);
+    PlayerController *GetPlayerController ();
+    void SetPlayerController (PlayerController *playerController);
 
     void OnPhysicsCollision (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void OnAttackInArea (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
